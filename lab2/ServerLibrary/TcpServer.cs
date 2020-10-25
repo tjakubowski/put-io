@@ -58,6 +58,8 @@ namespace ServerLibrary
         /// Starts TCP server
         /// </summary>
         public abstract void Start();
+        public abstract void AcceptClient();
+        public abstract void HandleDataTransmission();
     }
 }
 
