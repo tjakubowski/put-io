@@ -23,12 +23,12 @@ namespace ServerLibrary
                 if (_isListening)
                     _ipAddress = value;
                 else
-                    throw new Exception();
+                    throw new Exception("IP address cannot be changed while the server is running");
             }
         }
 
         /// <summary>
-        /// Returns the server address
+        /// Returns the server port
         /// </summary>
         public int Port
         {
@@ -38,7 +38,7 @@ namespace ServerLibrary
                 if (_isListening)
                     _port = value;
                 else
-                    throw new Exception();
+                    throw new Exception("Server port cannot be changed while the server is running");
             }
         }
 
