@@ -17,13 +17,12 @@ namespace ServerLibrary
 
         public override void Start()
         {
+            StartListening();
+            AcceptClient();
+        }
 
-            _listener = new TcpListener(IP, Port);
-            _listener.Start();
-            _isListening = true;
-
-            Console.WriteLine($"Server is listening at {IP}:{Port}");
-
+        public override void AcceptClient()
+        {
             TcpClient client = _listener.AcceptTcpClient();
             NetworkStream stream = client.GetStream();
             Console.WriteLine($"Client connected");
@@ -34,6 +33,14 @@ lorem Ipsum dolor Sit amet => Lorem Ipsum Dolor Sit Amet
 ");
             stream.Write(startText, 0, startText.Length);
 
+            HandleDataTransmission(stream);
+
+            client.Close();
+            _listener.Stop();
+        }
+
+        public override void HandleDataTransmission(NetworkStream stream)
+        {
             byte[] buffer = new byte[1024];
             int readSize;
 
@@ -47,9 +54,6 @@ lorem Ipsum dolor Sit amet => Lorem Ipsum Dolor Sit Amet
                 var capitalizedTextBytes = System.Text.Encoding.ASCII.GetBytes(capitalizedText);
                 stream.Write(capitalizedTextBytes, 0, capitalizedTextBytes.Length);
             }
-
-            client.Close();
-            _listener.Stop();
         }
     }
 }
