@@ -12,7 +12,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            TcpServer server = new TcpServer(IPAddress.Parse("127.0.0.1"), 2048);
+            TcpServerAsync server = new TcpServerAsync(IPAddress.Parse("127.0.0.1"), 2048);
             server.Start();
         }
     }
