@@ -53,13 +53,22 @@ namespace ServerLibrary
             _port = port;
         }
 
+        protected void StartListening()
+        {
+            _listener = new TcpListener(IP, Port);
+            _listener.Start();
+            _isListening = true;
+
+            Console.WriteLine($"Server is listening at {IP}:{Port}");
+        }
+
 
         /// <summary>
         /// Starts TCP server
         /// </summary>
         public abstract void Start();
         public abstract void AcceptClient();
-        public abstract void HandleDataTransmission();
+        public abstract void HandleDataTransmission(NetworkStream stream);
     }
 }
 
