@@ -9,8 +9,9 @@ namespace ServerLibrary
     {
         protected TcpListener _listener;
         protected IPAddress _ipAddress;
-        protected int _port;
-        protected bool _isListening;
+        private int _port;
+        private bool _isListening;
+        private int _buffer_size;
 
         /// <summary>
         /// Returns the server IP address
@@ -21,9 +22,9 @@ namespace ServerLibrary
             set
             {
                 if (_isListening)
-                    _ipAddress = value;
-                else
                     throw new Exception("IP address cannot be changed while the server is running");
+
+                _ipAddress = value;
             }
         }
 
@@ -36,9 +37,24 @@ namespace ServerLibrary
             set
             {
                 if (_isListening)
-                    _port = value;
-                else
                     throw new Exception("Server port cannot be changed while the server is running");
+                
+                _port = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns the buffer size
+        /// </summary>
+        public int BufferSize
+        {
+            get => _buffer_size;
+            set
+            {
+                if (_isListening)
+                    throw new Exception("Buffer size cannot be changed while the server is running");
+
+                _buffer_size = value;
             }
         }
 
