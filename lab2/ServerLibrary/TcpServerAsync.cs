@@ -47,9 +47,8 @@ namespace ServerLibrary
             {
                 try
                 {
-                    var messageSize = stream.Read(buffer, 0, BufferSize);
-                    Console.WriteLine(System.Text.Encoding.ASCII.GetString(buffer, 0, messageSize));
-                    stream.Write(buffer, 0, messageSize);
+                    var message = Read(stream, buffer);
+                    Send(stream, message);
                 }
                 catch
                 {

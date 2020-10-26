@@ -27,11 +27,10 @@ namespace ServerLibrary
             NetworkStream stream = client.GetStream();
             Console.WriteLine($"Client connected");
 
-            var startText = System.Text.Encoding.ASCII.GetBytes(
-                @"Zamiana malych pierwszych liter na wielkie
+            var startText = @"Zamiana malych pierwszych liter na wielkie
 lorem Ipsum dolor Sit amet => Lorem Ipsum Dolor Sit Amet
-");
-            stream.Write(startText, 0, startText.Length);
+";
+            Send(stream, startText);
 
             HandleDataTransmission(stream);
 
@@ -41,18 +40,23 @@ lorem Ipsum dolor Sit amet => Lorem Ipsum Dolor Sit Amet
 
         protected override void HandleDataTransmission(NetworkStream stream)
         {
-            byte[] buffer = new byte[1024];
-            int readSize;
+            byte[] buffer = new byte[BufferSize];
 
-            while ((readSize = stream.Read(buffer, 0, buffer.Length)) != 0)
+            while (true)
             {
-                var clientText = System.Text.Encoding.ASCII.GetString(buffer, 0, readSize);
+                try
+                {
+                    var clientText = Read(stream, buffer);
 
-                TextInfo cultureInfo = new CultureInfo("en-US", false).TextInfo;
-                var capitalizedText = cultureInfo.ToTitleCase(clientText);
+                    TextInfo cultureInfo = new CultureInfo("en-US", false).TextInfo;
+                    var capitalizedText = cultureInfo.ToTitleCase(clientText);
 
-                var capitalizedTextBytes = System.Text.Encoding.ASCII.GetBytes(capitalizedText);
-                stream.Write(capitalizedTextBytes, 0, capitalizedTextBytes.Length);
+                    Send(stream, capitalizedText);
+                }
+                catch
+                {
+                    break;
+                }
             }
         }
     }

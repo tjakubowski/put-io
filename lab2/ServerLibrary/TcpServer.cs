@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace ServerLibrary
 {
@@ -81,6 +82,23 @@ namespace ServerLibrary
             Console.WriteLine($"Server is listening at {IP}:{Port}");
         }
 
+        /// <summary>
+        /// Reads bytes from given NetworkStream
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="buffer"></param>
+        /// <returns>Returns string created from read bytes</returns>
+        protected String Read(NetworkStream stream, byte[] buffer)
+        {
+            var messageSize = stream.Read(buffer, 0, BufferSize);
+            return Encoding.ASCII.GetString(buffer, 0, messageSize);
+        }
+
+        protected void Send(NetworkStream stream, String data)
+        {
+            byte[] dataBytes = Encoding.ASCII.GetBytes(data);
+            stream.Write(dataBytes, 0, dataBytes.Length);
+        }
 
         /// <summary>
         /// Starts TCP server
