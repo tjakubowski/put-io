@@ -11,8 +11,8 @@ namespace ServerLibrary
         protected IPAddress _ipAddress;
         private int _port;
         private bool _isListening;
-        private int _buffer_size;
-
+        private int _buffer_size = 2048;
+        
         /// <summary>
         /// Returns the server IP address
         /// </summary>
