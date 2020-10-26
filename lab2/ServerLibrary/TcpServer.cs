@@ -69,6 +69,9 @@ namespace ServerLibrary
             _port = port;
         }
 
+        /// <summary>
+        /// Starts listening on given IP address and port
+        /// </summary>
         protected void StartListening()
         {
             _listener = new TcpListener(IP, Port);
@@ -83,8 +86,17 @@ namespace ServerLibrary
         /// Starts TCP server
         /// </summary>
         public abstract void Start();
-        public abstract void AcceptClient();
-        public abstract void HandleDataTransmission(NetworkStream stream);
+
+        /// <summary>
+        /// Accepts one or more clients
+        /// </summary>
+        protected abstract void AcceptClient();
+
+        /// <summary>
+        /// Handle data transmission between the user and server
+        /// </summary>
+        /// <param name="stream"></param>
+        protected abstract void HandleDataTransmission(NetworkStream stream);
     }
 }
 
