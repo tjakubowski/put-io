@@ -21,7 +21,7 @@ namespace ServerLibrary
             AcceptClient();
         }
 
-        public override void AcceptClient()
+        protected override void AcceptClient()
         {
             TcpClient client = _listener.AcceptTcpClient();
             NetworkStream stream = client.GetStream();
@@ -39,7 +39,7 @@ lorem Ipsum dolor Sit amet => Lorem Ipsum Dolor Sit Amet
             _listener.Stop();
         }
 
-        public override void HandleDataTransmission(NetworkStream stream)
+        protected override void HandleDataTransmission(NetworkStream stream)
         {
             byte[] buffer = new byte[1024];
             int readSize;
