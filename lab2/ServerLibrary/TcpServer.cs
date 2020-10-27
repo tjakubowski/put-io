@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -94,10 +95,25 @@ namespace ServerLibrary
             return Encoding.ASCII.GetString(buffer, 0, messageSize);
         }
 
+        /// <summary>
+        /// Sends a string to the client
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="data"></param>
         protected void Send(NetworkStream stream, String data)
         {
             byte[] dataBytes = Encoding.ASCII.GetBytes(data);
             stream.Write(dataBytes, 0, dataBytes.Length);
+        }
+
+        /// <summary>
+        /// Sends a string with new line character to the client
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="data"></param>
+        protected void SendLine(NetworkStream stream, String data)
+        {
+            Send(stream, data + '\n');
         }
 
         /// <summary>
