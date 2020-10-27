@@ -84,39 +84,6 @@ namespace ServerLibrary
         }
 
         /// <summary>
-        /// Reads bytes from given NetworkStream
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="buffer"></param>
-        /// <returns>Returns string created from read bytes</returns>
-        protected String Read(NetworkStream stream, byte[] buffer)
-        {
-            var messageSize = stream.Read(buffer, 0, BufferSize);
-            return Encoding.ASCII.GetString(buffer, 0, messageSize);
-        }
-
-        /// <summary>
-        /// Sends a string to the client
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="data"></param>
-        protected void Send(NetworkStream stream, String data)
-        {
-            byte[] dataBytes = Encoding.ASCII.GetBytes(data);
-            stream.Write(dataBytes, 0, dataBytes.Length);
-        }
-
-        /// <summary>
-        /// Sends a string with new line character to the client
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="data"></param>
-        protected void SendLine(NetworkStream stream, String data)
-        {
-            Send(stream, data + '\n');
-        }
-
-        /// <summary>
         /// Starts TCP server
         /// </summary>
         public abstract void Start();
@@ -129,8 +96,8 @@ namespace ServerLibrary
         /// <summary>
         /// Handle data transmission between the user and server
         /// </summary>
-        /// <param name="stream"></param>
-        protected abstract void HandleDataTransmission(NetworkStream stream);
+        /// <param name="connection"></param>
+        protected abstract void HandleDataTransmission(TcpServerConnection connection);
     }
 }
 

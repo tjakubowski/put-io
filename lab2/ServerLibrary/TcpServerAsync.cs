@@ -12,7 +12,7 @@ namespace ServerLibrary
 {
     public class TcpServerAsync : TcpServer
     {
-        private delegate void HandleDataTransmissionDelegate(NetworkStream stream);
+        private delegate void HandleDataTransmissionDelegate(TcpServerConnection connection);
 
         public TcpServerAsync(IPAddress ipAddress, int port) : base(ipAddress, port)
         {
@@ -29,32 +29,30 @@ namespace ServerLibrary
             while (true)
             {
                 TcpClient tcpClient = _listener.AcceptTcpClient();
-                NetworkStream stream = tcpClient.GetStream();
+                TcpServerConnection connection = new TcpServerConnection(tcpClient);
 
                 Console.WriteLine($"Client connected");
 
                 HandleDataTransmissionDelegate handleDataTransmissionDelegate = HandleDataTransmission;
 
-                handleDataTransmissionDelegate.BeginInvoke(stream, CloseClientConnection, tcpClient);
+                handleDataTransmissionDelegate.BeginInvoke(connection, CloseClientConnection, tcpClient);
             }
 
         }
 
 
 
-        protected override void HandleDataTransmission(NetworkStream stream)
+        protected override void HandleDataTransmission(TcpServerConnection connection)
         {
-            var buffer = new byte[BufferSize];
-
             try
             {
-                AuthenticateUser(stream, buffer);
+                AuthenticateUser(connection);
 
                 while (true)
                 {
-                    var message = Read(stream, buffer);
+                    var message = connection.Read();
                     Console.WriteLine(message);
-                    Send(stream, message);
+                    connection.Send(message);
                 }
             }
             catch(IOException ex)
@@ -64,20 +62,20 @@ namespace ServerLibrary
 
         }
 
-        private void AuthenticateUser(NetworkStream stream, byte[] buffer)
+        private void AuthenticateUser(TcpServerConnection connection)
         {
-            Send(stream, "User authentication");
+            connection.Send("User authentication");
 
-            Send(stream, "Username: ");
-            var username = Read(stream, buffer);
+            connection.Send("Username: ");
+            var username = connection.Read();
 
-            Send(stream, "Password: ");
-            var password = Read(stream, buffer);
+            connection.Send("Password: ");
+            var password = connection.Read();
 
-            if(password != "asdf" && username != "admin")
-                Send(stream, "Blad");
+            if (username == "admin" && password == "test")
+                connection.Send("Success");
             else
-                Send(stream, "Dobrze");
+                connection.Send("Error");
         }
 
         void CloseClientConnection(IAsyncResult result)
@@ -87,7 +85,6 @@ namespace ServerLibrary
 
             Console.WriteLine($"Client disconnected");
         }
-
 
     }
 }

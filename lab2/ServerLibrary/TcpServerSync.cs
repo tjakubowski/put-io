@@ -23,35 +23,33 @@ namespace ServerLibrary
 
         protected override void AcceptClient()
         {
-            TcpClient client = _listener.AcceptTcpClient();
-            NetworkStream stream = client.GetStream();
+            TcpClient tcpClient = _listener.AcceptTcpClient();
+            TcpServerConnection connection = new TcpServerConnection(tcpClient);
             Console.WriteLine($"Client connected");
 
             var startText = @"Zamiana malych pierwszych liter na wielkie
 lorem Ipsum dolor Sit amet => Lorem Ipsum Dolor Sit Amet
 ";
-            Send(stream, startText);
+            connection.Send(startText);
 
-            HandleDataTransmission(stream);
+            HandleDataTransmission(connection);
 
-            client.Close();
+            tcpClient.Close();
             _listener.Stop();
         }
 
-        protected override void HandleDataTransmission(NetworkStream stream)
+        protected override void HandleDataTransmission(TcpServerConnection connection)
         {
-            byte[] buffer = new byte[BufferSize];
-
             while (true)
             {
                 try
                 {
-                    var clientText = Read(stream, buffer);
+                    var clientText = connection.Read();
 
                     TextInfo cultureInfo = new CultureInfo("en-US", false).TextInfo;
                     var capitalizedText = cultureInfo.ToTitleCase(clientText);
 
-                    Send(stream, capitalizedText);
+                    connection.Send(capitalizedText);
                 }
                 catch
                 {
