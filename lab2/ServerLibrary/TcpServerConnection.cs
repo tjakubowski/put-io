@@ -13,6 +13,7 @@ namespace ServerLibrary
         private readonly StreamReader _reader;
         private readonly StreamWriter _writer;
         public TcpClient Client { get; }
+        public UserModel User;
 
         public TcpServerConnection(TcpClient client)
         {
