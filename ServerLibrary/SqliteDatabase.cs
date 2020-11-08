@@ -18,7 +18,7 @@ namespace ServerLibrary
             {
                 try
                 {
-                    return conn.QueryFirst<UserModel>("SELECT * FROM Users WHERE username = @Username",
+                    return conn.QueryFirst<UserModel>("SELECT * FROM User WHERE username = @Username",
                         new { Username = username });
                 }
                 catch (Exception ex)
@@ -34,7 +34,7 @@ namespace ServerLibrary
             {
                 try
                 {
-                    conn.Execute("INSERT INTO Users(username, password) VALUES (@Username, @Password)",
+                    conn.Execute("INSERT INTO User(username, password) VALUES (@Username, @Password)",
                         new {Username = user.Username, Password = user.Password});
                 }
                 catch (Exception ex)
@@ -50,7 +50,7 @@ namespace ServerLibrary
             {
                 try
                 {
-                    conn.Execute("UPDATE Users SET password = @Password WHERE id = @Id", new { Id = user.Id, Password = user.Password });
+                    conn.Execute("UPDATE User SET password = @Password WHERE id = @Id", new { Id = user.Id, Password = user.Password });
                 }
                 catch (Exception ex)
                 {
