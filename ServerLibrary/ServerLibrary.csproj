@@ -64,6 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerDbContext.cs" />
     <Compile Include="TcpServer.cs" />

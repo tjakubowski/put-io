@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,6 +22,10 @@ namespace ServerLibrary
 
         [Column("admin")]
         public bool Admin { get; set; }
+
+        public virtual ICollection<Channel> Channels { get; set; }
+
+        public virtual ICollection<Message> Messages { get; set; }
 
         public static string CreatePassword(string input)
         {
