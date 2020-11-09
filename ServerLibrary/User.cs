@@ -1,29 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerLibrary
 {
-    public class UserModel
+    [Table("User")]
+    public class User
     {
-        public int Id;
-        public string Username;
-        public string Password;
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
+        public int Id { get; set; }
 
-        public UserModel() {}
+        [Column("username")]
+        public string Username { get; set; }
 
-        public UserModel(string username, string password)
-        {
-            Username = username;
-            Password = password;
-        }
+        [Column("password")]
+        public string Password { get; set; }
+
+        [Column("admin")]
+        public bool Admin { get; set; }
 
         public static string CreatePassword(string input)
         {
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            using (MD5 md5 = MD5.Create())
             {
                 byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);

@@ -137,11 +137,10 @@ namespace ServerLibrary
             connection.Send("Password: ");
             var password = connection.Read();
 
-            var user = SqliteDatabase.GetUser(username);
-
-            if (user != null && user.Password == UserModel.CreatePassword(password))
+            using (var context = new ServerDbContext())
             {
-                connection.User = user;
+                var hash = User.CreatePassword(password);
+                connection.User = context.Users.SingleOrDefault(u => u.Username == username && u.Password == hash);
             }
         }
 
@@ -154,10 +153,13 @@ namespace ServerLibrary
 
             connection.Send("Repeat password: ");
 
-            if (password == connection.Read())
+            if (password != connection.Read())
+                throw new Exception("Wrong password");
+
+            using (var context = new ServerDbContext())
             {
-                connection.User.Password = UserModel.CreatePassword(password);
-                SqliteDatabase.UpdateUser(connection.User);
+                connection.User.Password = User.CreatePassword(password);
+                context.SaveChanges();
             }
         }
 
@@ -171,10 +173,20 @@ namespace ServerLibrary
             connection.Send("Password: ");
             var password = connection.Read();
 
-            var user = new UserModel(username, UserModel.CreatePassword(password));
 
-            SqliteDatabase.SaveUser(user);
-            connection.User = user;
+            using (var context = new ServerDbContext())
+            {
+                var user = new User()
+                {
+                    Username = username,
+                    Password = User.CreatePassword(password)
+                };
+
+                context.Users.Add(user);
+                context.SaveChanges();
+
+                connection.User = user;
+            }
         }
 
     }
