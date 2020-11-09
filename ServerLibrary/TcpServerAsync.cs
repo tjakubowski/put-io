@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -159,6 +160,8 @@ namespace ServerLibrary
             using (var context = new ServerDbContext())
             {
                 connection.User.Password = User.CreatePassword(password);
+                context.Users.Attach(connection.User);
+                context.Entry(connection.User).State = EntityState.Modified;
                 context.SaveChanges();
             }
         }
