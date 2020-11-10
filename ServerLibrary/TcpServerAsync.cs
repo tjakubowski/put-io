@@ -90,13 +90,13 @@ namespace ServerLibrary
                 connection.SendLine("1. Change password");
                 connection.SendLine("2. Text to uppercase");
                 connection.Send("> ");
-
-                choice = Parse(connection.Read());
-
-                if (choice == 0)
-                    return;
                 try
                 {
+                    choice = Parse(connection.Read());
+
+                    if (choice == 0)
+                        return;
+
                     if (choice == 1)
                     {
                         ChangePassword(connection);
