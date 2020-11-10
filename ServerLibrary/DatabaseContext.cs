@@ -1,15 +1,16 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using ServerLibrary.Models;
 
 
 namespace ServerLibrary
 {
-    public class ServerDbContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public ServerDbContext() : base("Default")
+        public DatabaseContext() : base("Default")
         {
-            Database.SetInitializer<ServerDbContext>(null);
+            Database.SetInitializer<DatabaseContext>(null);
         }
 
         public DbSet<User> Users { get; set; }

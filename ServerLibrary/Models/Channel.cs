@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ServerLibrary
+namespace ServerLibrary.Models
 {
     [Table("Channel")]
     public class Channel

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Security;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+using ServerLibrary.Models;
 using static System.Int32;
 
-namespace ServerLibrary
+namespace ServerLibrary.Server
 {
     public class TcpServerAsync : TcpServer
     {
@@ -50,6 +46,8 @@ namespace ServerLibrary
 
             while (true)
             {
+                RequestLogin rl = new RequestLogin("admin", "password");
+                
 
                 connection.SendLine("0. Exit");
                 connection.SendLine("1. Login");
@@ -138,7 +136,7 @@ namespace ServerLibrary
             connection.Send("Password: ");
             var password = connection.Read();
 
-            using (var context = new ServerDbContext())
+            using (var context = new DatabaseContext())
             {
                 var hash = User.CreatePassword(password);
                 connection.User = context.Users.SingleOrDefault(u => u.Username == username && u.Password == hash);
@@ -157,7 +155,7 @@ namespace ServerLibrary
             if (password != connection.Read())
                 throw new Exception("Wrong password");
 
-            using (var context = new ServerDbContext())
+            using (var context = new DatabaseContext())
             {
                 connection.User.Password = User.CreatePassword(password);
                 context.Users.Attach(connection.User);
@@ -177,7 +175,7 @@ namespace ServerLibrary
             var password = connection.Read();
 
 
-            using (var context = new ServerDbContext())
+            using (var context = new DatabaseContext())
             {
                 var user = new User()
                 {

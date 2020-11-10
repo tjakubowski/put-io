@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ServerLibrary
+namespace ServerLibrary.Models
 {
     [Table("User")]
     public class User

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
-namespace ServerLibrary
+namespace ServerLibrary.Server
 {
     public abstract class TcpServer
     {
