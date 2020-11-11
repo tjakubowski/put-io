@@ -93,8 +93,8 @@ namespace ServerLibrary.Server
         /// <summary>
         /// Handle data transmission between the user and server
         /// </summary>
-        /// <param name="connection"></param>
-        protected abstract void HandleDataTransmission(TcpServerConnection connection);
+        /// <param name="session"></param>
+        protected abstract void HandleClientSession(TcpServerSession session);
     }
 }
 

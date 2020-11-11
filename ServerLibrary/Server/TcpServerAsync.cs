@@ -3,15 +3,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using ServerLibrary.Models;
-using static System.Int32;
+using ServerLibrary.Server.Messages;
 
 namespace ServerLibrary.Server
 {
     public class TcpServerAsync : TcpServer
     {
-        private delegate void HandleDataTransmissionDelegate(TcpServerConnection connection);
-
         public TcpServerAsync(IPAddress ipAddress, int port) : base(ipAddress, port)
         {
         }
@@ -19,174 +18,112 @@ namespace ServerLibrary.Server
         public override void Start()
         {
             StartListening();
-            AcceptClient();
+
+            while (true)
+                AcceptClient();
         }
 
         protected override void AcceptClient()
         {
-            while (true)
+            TcpClient tcpClient = _listener.AcceptTcpClient();
+            TcpServerSession session = new TcpServerSession(tcpClient);
+
+            Console.WriteLine($"Client connected");
+
+            Task.Run(() =>
             {
-                TcpClient tcpClient = _listener.AcceptTcpClient();
-                TcpServerConnection connection = new TcpServerConnection(tcpClient);
-
-                Console.WriteLine($"Client connected");
-
-                HandleDataTransmissionDelegate handleDataTransmissionDelegate = HandleDataTransmission;
-
-                handleDataTransmissionDelegate.BeginInvoke(connection, CloseClientConnection, connection);
-            }
-
+                HandleClientSession(session);
+                CloseClientSession(session);
+            });
         }
 
-
-
-        protected override void HandleDataTransmission(TcpServerConnection connection)
+        protected override void HandleClientSession(TcpServerSession session)
         {
-            int choice;
-
-            while (true)
+            while (session.Client.Connected && session.User == null)
             {
-                RequestLogin rl = new RequestLogin("admin", "password");
-                
-
-                connection.SendLine("0. Exit");
-                connection.SendLine("1. Login");
-                connection.SendLine("2. Register");
-                connection.Send("> ");
-
                 try
                 {
-                    choice = Parse(connection.Read());
+                    var readBytes = session.ReadBytes();
+                    var request = TcpMessageSerializer.Deserialize(new TcpMessage(readBytes));
 
-                    if (choice == 0)
-                        return;
-
-                    if (choice == 1)
+                    if (request is AuthenticationForm authenticationForm)
                     {
-                        Login(connection);
-                        connection.SendLine($"Hello {connection.User.Username}");
-                        Console.WriteLine($"{connection.User.Username} logged in.");
-                        break;
+                        switch (authenticationForm.AuthenticationType)
+                        {
+                            case AuthenticationType.Login:
+                                Login(session, authenticationForm);
+                                break;
+                            case AuthenticationType.Register:
+                                Register(session, authenticationForm);
+                                break;
+                        }
                     }
-                    if (choice == 2)
-                    {
-                        Register(connection);
-                        connection.SendLine($"You have been registered. Hello {connection.User.Username}");
-                        Console.WriteLine($"{connection.User.Username} registered.");
-                        break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    connection.SendLine(e.Message);
-                }
-            }
 
-            while (true)
-            {
-                connection.SendLine("0. Exit");
-                connection.SendLine("1. Change password");
-                connection.SendLine("2. Text to uppercase");
-                connection.Send("> ");
-                try
-                {
-                    choice = Parse(connection.Read());
+                    if (session.User == null)
+                        continue;
 
-                    if (choice == 0)
-                        return;
-
-                    if (choice == 1)
+                    if (request is ChangePasswordForm changePasswordForm)
                     {
-                        ChangePassword(connection);
-                        connection.SendLine("Success! Password changed");
-                        Console.WriteLine($"{connection.User.Username} changed password.");
-                    }
-                    else if (choice == 2)
-                    {
-                        connection.Send("> ");
-                        var text = connection.Read();
-                        connection.SendLine(text.ToUpper());
+                        ChangePassword(session, changePasswordForm);
                     }
                 }
-                catch (Exception e)
+                catch (ArgumentNullException)
                 {
-                    connection.SendLine(e.Message);
+                    return;
                 }
             }
         }
 
-        void CloseClientConnection(IAsyncResult result)
+        void CloseClientSession(TcpServerSession session)
         {
-            TcpServerConnection connection = (TcpServerConnection) result.AsyncState;
-            connection.Client.Close();
+            session.Client.Close();
 
-            if(connection.User != null)
-                Console.WriteLine($"{connection.User.Username} logged out.");
+            if(session.User != null)
+                Console.WriteLine($"[Logout] User {session.User.Username} logged out.");
 
-            Console.WriteLine($"Client disconnected");
+            Console.WriteLine($"[Close Session] Client disconnected");
         }
 
-        private void Login(TcpServerConnection connection)
+        private void Login(TcpServerSession session, AuthenticationForm form)
         {
-            connection.SendLine("User authentication");
-
-            connection.Send("Username: ");
-            var username = connection.Read();
-
-            connection.Send("Password: ");
-            var password = connection.Read();
-
             using (var context = new DatabaseContext())
             {
-                var hash = User.CreatePassword(password);
-                connection.User = context.Users.SingleOrDefault(u => u.Username == username && u.Password == hash);
+                var hash = User.CreatePassword(form.Password);
+                session.User = context.Users.SingleOrDefault(u => u.Username == form.Username && u.Password == hash);
+
+                Console.WriteLine($"[Login] User {session.User.Username} logged in");
             }
         }
 
-        private void ChangePassword(TcpServerConnection connection)
+        private void ChangePassword(TcpServerSession session, ChangePasswordForm form)
         {
-            connection.SendLine("Password change");
-
-            connection.Send("New password: ");
-            var password = connection.Read();
-
-            connection.Send("Repeat password: ");
-
-            if (password != connection.Read())
-                throw new Exception("Wrong password");
-
             using (var context = new DatabaseContext())
             {
-                connection.User.Password = User.CreatePassword(password);
-                context.Users.Attach(connection.User);
-                context.Entry(connection.User).State = EntityState.Modified;
+                session.User.Password = User.CreatePassword(form.Password);
+                context.Users.Attach(session.User);
+                context.Entry(session.User).State = EntityState.Modified;
                 context.SaveChanges();
+
+                Console.WriteLine($"[ChangePassword] User {session.User.Username} changed password");
             }
         }
 
-        private void Register(TcpServerConnection connection)
+        private void Register(TcpServerSession session, AuthenticationForm form)
         {
-            connection.SendLine("Registration");
-
-            connection.Send("Username: ");
-            var username = connection.Read();
-
-            connection.Send("Password: ");
-            var password = connection.Read();
-
-
             using (var context = new DatabaseContext())
             {
                 var user = new User()
                 {
-                    Username = username,
-                    Password = User.CreatePassword(password)
+                    Username = form.Username,
+                    Password = User.CreatePassword(form.Password)
                 };
 
                 context.Users.Add(user);
                 context.SaveChanges();
 
-                connection.User = user;
+                session.User = user;
+
+                Console.WriteLine($"[Register] User {user.Username} registered");
             }
         }
 

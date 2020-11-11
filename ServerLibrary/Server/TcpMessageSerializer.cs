@@ -5,12 +5,12 @@ namespace ServerLibrary.Server
 {
     public static class TcpMessageSerializer
     {
-        public static TcpMessage Serialize(object anySerializableObject)
+        public static TcpMessage Serialize(object serializableObject)
         {
             using (var memoryStream = new MemoryStream())
             {
-                (new BinaryFormatter()).Serialize(memoryStream, anySerializableObject);
-                return new TcpMessage { Data = memoryStream.ToArray() };
+                (new BinaryFormatter()).Serialize(memoryStream, serializableObject);
+                return new TcpMessage(memoryStream.ToArray());
             }
         }
 

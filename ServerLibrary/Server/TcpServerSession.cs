@@ -1,39 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using ServerLibrary.Models;
 
-namespace ServerLibrary
+namespace ServerLibrary.Server
 {
-    public class TcpServerConnection
+    public class TcpServerSession
     {
+        private readonly NetworkStream _stream;
         private readonly StreamReader _reader;
         private readonly StreamWriter _writer;
         public TcpClient Client { get; }
         public User User;
 
-        public TcpServerConnection(TcpClient client)
+        public TcpServerSession(TcpClient client)
         {
-            var stream = client.GetStream();
-
             Client = client;
-            _reader = new StreamReader(stream);
-            _writer = new StreamWriter(stream) {AutoFlush = true};
+
+            _stream = client.GetStream();
+            _reader = new StreamReader(_stream);
+            _writer = new StreamWriter(_stream) {AutoFlush = true};
         }
 
 
         /// <summary>
-        /// Reads bytes from given NetworkStream
+        /// Reads whole line of text
         /// </summary>
-        /// <param name="connection"></param>
         /// <returns>Returns string created from read bytes</returns>
         public String Read()
         {
             return _reader.ReadLine();
+        }
+
+        /// <summary>
+        /// Reads all bytes from given NetworkStream 
+        /// </summary>
+        /// <returns>Returns all read bytes</returns>
+        public byte[] ReadBytes()
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                _stream.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
 
         /// <summary>
@@ -52,6 +61,11 @@ namespace ServerLibrary
         public void SendLine(String message)
         {
             _writer.WriteLine(message);
+        }
+
+        public void SendBytes(byte[] bytes)
+        {
+            _stream.Write(bytes, 0, bytes.Length);
         }
     }
 }

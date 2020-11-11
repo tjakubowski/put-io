@@ -68,6 +68,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseContext.cs" />
+    <Compile Include="Server\Messages\ChangePasswordForm.cs" />
     <Compile Include="Server\Messages\ChannelsResponse.cs" />
     <Compile Include="Server\Messages\ChannelUserForm.cs" />
     <Compile Include="Server\Messages\AuthenticationForm.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="Server\Messages\SimpleResponse.cs" />
     <Compile Include="Server\TcpServer.cs" />
     <Compile Include="Server\TcpServerAsync.cs" />
-    <Compile Include="Server\TcpServerConnection.cs" />
+    <Compile Include="Server\TcpServerSession.cs" />
     <Compile Include="Server\TcpServerSync.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Server\TcpMessageSerializer.cs" />
