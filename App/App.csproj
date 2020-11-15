@@ -95,9 +95,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServerLibrary\ServerLibrary.csproj">
+    <ProjectReference Include="..\ServerLibrary\TCPLibrary.csproj">
       <Project>{ed726f84-7880-4be1-9435-46bf26c2c735}</Project>
-      <Name>ServerLibrary</Name>
+      <Name>TCPLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
