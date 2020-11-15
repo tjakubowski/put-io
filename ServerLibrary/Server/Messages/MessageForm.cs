@@ -3,7 +3,7 @@
 namespace ServerLibrary.Server.Messages
 {
     [Serializable]
-    class MessageForm
+    public class MessageForm
     {
         public int ChannelId;
         public string Text;

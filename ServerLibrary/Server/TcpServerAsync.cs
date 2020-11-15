@@ -44,7 +44,7 @@ namespace ServerLibrary.Server
                 try
                 {
                     var readBytes = session.ReadBytes();
-                    var request = TcpMessageSerializer.Deserialize(new TcpMessage(readBytes));
+                    var request = MessageSerializer.Deserialize(new TcpMessage(readBytes));
 
                     if (request is AuthenticationForm authenticationForm)
                     {

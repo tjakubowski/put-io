@@ -10,7 +10,7 @@ namespace ServerLibrary.Server.Messages
     }
 
     [Serializable]
-    class AuthenticationForm
+    public class AuthenticationForm
     {
         public AuthenticationType AuthenticationType;
         public string Username;

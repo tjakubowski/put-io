@@ -8,7 +8,7 @@ using ServerLibrary.Models;
 namespace ServerLibrary.Server.Messages
 {
     [Serializable]
-    class ChannelsResponse
+    public class ChannelsResponse
     {
         public List<Channel> Channels;
     }

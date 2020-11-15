@@ -3,7 +3,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ServerLibrary.Server
 {
-    public static class TcpMessageSerializer
+    public static class MessageSerializer
     {
         public static TcpMessage Serialize(object serializableObject)
         {

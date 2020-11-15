@@ -79,7 +79,7 @@
     <Compile Include="Server\TcpServerSession.cs" />
     <Compile Include="Server\TcpServerSync.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Server\TcpMessageSerializer.cs" />
+    <Compile Include="Server\MessageSerializer.cs" />
     <Compile Include="Server\TcpMessage.cs" />
   </ItemGroup>
   <ItemGroup>

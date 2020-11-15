@@ -3,7 +3,7 @@
 namespace ServerLibrary.Server.Messages
 {
     [Serializable]
-    class ChangePasswordForm
+    public class ChangePasswordForm
     {
         public string Password;
 
