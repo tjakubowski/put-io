@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerLibrary.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,21 @@ namespace App
     /// </summary>
     public partial class MainWindow : Window
     {
+        Client client;
         public MainWindow()
         {
+            try { 
+                client = new Client();
+            }catch(Exception e)
+            {
+                Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
+            }
             InitializeComponent();
+        }
+
+        private void SendChannelMsgButton_Click(object sender, RoutedEventArgs e)
+        {
+            client.SendMessage(ChannelMessage.Text);
         }
     }
 }
