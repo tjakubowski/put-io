@@ -21,10 +21,11 @@ namespace App
     /// </summary>
     public partial class MainWindow : Window
     {
+        Client client;
         public MainWindow()
         {
             try { 
-                Client client = new Client();
+                client = new Client();
             }catch(Exception e)
             {
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
@@ -32,7 +33,7 @@ namespace App
             InitializeComponent();
         }
 
-        private void SendChannelMsgButton_Click(object sender, RoutedEventArgs e, Client client)
+        private void SendChannelMsgButton_Click(object sender, RoutedEventArgs e)
         {
             client.SendMessage(ChannelMessage.Text);
         }

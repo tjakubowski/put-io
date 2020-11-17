@@ -135,8 +135,8 @@ namespace ServerLibrary.Client
             {
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
             }
-
         }
+
 
         public void SendMessage(string msg)
         {
