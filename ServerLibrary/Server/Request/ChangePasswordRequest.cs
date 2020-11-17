@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace ServerLibrary.Server.Messages
+namespace ServerLibrary.Server.Request
 {
     [Serializable]
-    public class ChangePasswordForm
+    public class ChangePasswordRequest
     {
         public string Password;
 
-        public ChangePasswordForm(string password)
+        public ChangePasswordRequest(string password)
         {
             Password = password;
         }

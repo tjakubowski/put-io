@@ -68,12 +68,28 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseContext.cs" />
-    <Compile Include="Server\Messages\ChangePasswordForm.cs" />
-    <Compile Include="Server\Messages\ChannelsResponse.cs" />
-    <Compile Include="Server\Messages\ChannelUserForm.cs" />
-    <Compile Include="Server\Messages\AuthenticationForm.cs" />
-    <Compile Include="Server\Messages\MessageForm.cs" />
-    <Compile Include="Server\Messages\SimpleResponse.cs" />
+    <Compile Include="Server\Request\RemoveChannelRequest.cs" />
+    <Compile Include="Server\Request\ChannelRequest.cs" />
+    <Compile Include="Server\Request\AddChannelRequest.cs" />
+    <Compile Include="Server\Request\RemoveChannelUserRequest.cs" />
+    <Compile Include="Server\Request\AddChannelUserRequest.cs" />
+    <Compile Include="Server\Request\ChangePasswordRequest.cs" />
+    <Compile Include="Server\Request\LoginRequest.cs" />
+    <Compile Include="Server\Request\RegisterRequest.cs" />
+    <Compile Include="Server\Response\AddChannelUserResponse.cs" />
+    <Compile Include="Server\Response\ChangePasswordResponse.cs" />
+    <Compile Include="Server\Response\ChannelResponse.cs" />
+    <Compile Include="Server\Response\ChannelsResponse.cs" />
+    <Compile Include="Server\Request\Base\BaseChannelUserRequest.cs" />
+    <Compile Include="Server\Request\Base\BaseAuthenticationRequest.cs" />
+    <Compile Include="Server\Request\AddMessageRequest.cs" />
+    <Compile Include="Server\Response\Base\BaseResponse.cs" />
+    <Compile Include="Server\Response\LoginResponse.cs" />
+    <Compile Include="Server\Response\AddChannelResponse.cs" />
+    <Compile Include="Server\Response\AddMessageResponse.cs" />
+    <Compile Include="Server\Response\RegisterResponse.cs" />
+    <Compile Include="Server\Response\RemoveChannelResponse.cs" />
+    <Compile Include="Server\Response\RemoveChannelUserResponse.cs" />
     <Compile Include="Server\TcpServer.cs" />
     <Compile Include="Server\TcpServerAsync.cs" />
     <Compile Include="Server\TcpServerSession.cs" />
@@ -86,7 +102,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\Base\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

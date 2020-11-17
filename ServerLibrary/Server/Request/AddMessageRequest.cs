@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace ServerLibrary.Server.Messages
+namespace ServerLibrary.Server.Request
 {
     [Serializable]
-    public class MessageForm
+    public class AddMessageRequest
     {
         public int ChannelId;
         public string Text;
 
-        public MessageForm(int channelId, string text)
+        public AddMessageRequest(int channelId, string text)
         {
             ChannelId = channelId;
             Text = text;

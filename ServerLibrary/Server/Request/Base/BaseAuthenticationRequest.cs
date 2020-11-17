@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServerLibrary.Server.Messages
+namespace ServerLibrary.Server.Request
 {
     [Serializable]
     public enum AuthenticationType
@@ -10,13 +10,13 @@ namespace ServerLibrary.Server.Messages
     }
 
     [Serializable]
-    public class AuthenticationForm
+    public abstract class AuthenticationRequest
     {
         public AuthenticationType AuthenticationType;
         public string Username;
         public string Password;
 
-        public AuthenticationForm(string username, string password, AuthenticationType authenticationType = AuthenticationType.Login)
+        protected AuthenticationRequest(string username, string password, AuthenticationType authenticationType)
         {
             Username = username;
             Password = password;

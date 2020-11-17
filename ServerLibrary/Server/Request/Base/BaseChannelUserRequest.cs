@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServerLibrary.Server.Messages
+namespace ServerLibrary.Server.Request
 {
     [Serializable]
     public enum ChannelUserActionType
@@ -14,13 +10,13 @@ namespace ServerLibrary.Server.Messages
     }
 
     [Serializable]
-    public class ChannelUserForm
+    public abstract class BaseChannelUserRequest
     {
         public ChannelUserActionType ChannelUserActionType;
         public int UserId;
         public int ChannelId;
 
-        public ChannelUserForm(int userId, int channelId, ChannelUserActionType channelUserActionType = ChannelUserActionType.Add)
+        protected BaseChannelUserRequest(int userId, int channelId, ChannelUserActionType channelUserActionType)
         {
             UserId = userId;
             ChannelId = channelId;

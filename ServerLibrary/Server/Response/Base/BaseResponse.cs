@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace ServerLibrary.Server.Messages
+namespace ServerLibrary.Server.Response
 {
     [Serializable]
-    public class SimpleResponse
+    public abstract class BaseResponse
     {
         public bool Result;
         public string Message;
 
-        public SimpleResponse(bool result, string message = "")
+        protected BaseResponse(bool result, string message = "")
         {
             Result = result;
             Message = message;
