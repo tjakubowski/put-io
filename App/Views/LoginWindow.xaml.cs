@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerLibrary.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,18 @@ namespace App.Views
         public LoginWindow()
         {
             InitializeComponent();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            //need global client class instance to send msg
+            client.SendLoginData(Username.Text, Password.Text);
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            //need global client class instance to send msg
+            client.SendRegisterData(Username.Text, Password.Text);
         }
     }
 }

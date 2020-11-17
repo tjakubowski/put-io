@@ -33,8 +33,8 @@
         <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0"></Border>
         <Border Grid.Column="1" Grid.Row="1" Background="#FF36393F" Padding="5">
             <DockPanel>
-                <Button x:Name="SendButton" DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro">SEND</Button>
-                <TextBox x:Name="SendMessage" Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8"></TextBox>
+                <Button x:Name="SendChannelMsgButton" DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Click="SendChannelMsgButton_Click">SEND</Button>
+                <TextBox x:Name="ChannelMessage" Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8"></TextBox>
             </DockPanel>
         </Border>
 

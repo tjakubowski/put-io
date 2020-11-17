@@ -63,7 +63,7 @@ namespace ServerLibrary.Client
                     //}
                 }catch(ArgumentNullException)
                 {
-                    return;
+                    continue;
                 }
             }
 
@@ -108,12 +108,11 @@ namespace ServerLibrary.Client
 
         }
 
-
         public void SendLoginData(string log, string pass)
         {
             try
             {
-                AuthenticationForm form = new AuthenticationForm(log, pass);
+                AuthenticationForm form = new AuthenticationForm(log, pass, AuthenticationType.Login);
                 TcpMessage login_msg = MessageSerializer.Serialize(form);
                 stream.Write(login_msg.Data, 0, login_msg.Data.Length);
             }
@@ -124,9 +123,24 @@ namespace ServerLibrary.Client
 
         }
 
-        public void SendMessage(int ch_id, string msg)
+        public void SendRegisterData(string log, string pass)
         {
-            MessageForm form = new MessageForm(ch_id, msg);
+            try
+            {
+                AuthenticationForm form = new AuthenticationForm(log, pass, AuthenticationType.Register);
+                TcpMessage reg_msg = MessageSerializer.Serialize(form);
+                stream.Write(reg_msg.Data, 0, reg_msg.Data.Length);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
+            }
+
+        }
+
+        public void SendMessage(string msg)
+        {
+            MessageForm form = new MessageForm(msg);
             TcpMessage message = MessageSerializer.Serialize(form);
             stream.Write(message.Data, 0, message.Data.Length);
         }

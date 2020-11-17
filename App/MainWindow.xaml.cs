@@ -29,8 +29,12 @@ namespace App
             {
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
             }
-            
             InitializeComponent();
+        }
+
+        private void SendChannelMsgButton_Click(object sender, RoutedEventArgs e, Client client)
+        {
+            client.SendMessage(ChannelMessage.Text);
         }
     }
 }
