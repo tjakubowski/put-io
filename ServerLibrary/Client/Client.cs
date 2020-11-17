@@ -6,7 +6,6 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using ServerLibrary.Server;
-using ServerLibrary.Server.Messages;
 
 namespace ServerLibrary.Client
 {
