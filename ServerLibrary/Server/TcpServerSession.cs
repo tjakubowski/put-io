@@ -12,6 +12,7 @@ namespace ServerLibrary.Server
         private readonly StreamWriter _writer;
         public TcpClient Client { get; }
         public User User;
+        public int ChannelId;
 
         public TcpServerSession(TcpClient client)
         {
