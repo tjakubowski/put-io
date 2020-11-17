@@ -23,7 +23,13 @@ namespace App
     {
         public MainWindow()
         {
-            Client client = new Client();
+            try { 
+                Client client = new Client();
+            }catch(Exception e)
+            {
+                Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
+            }
+            
             InitializeComponent();
         }
     }
