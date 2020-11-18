@@ -18,6 +18,13 @@ namespace ServerLibrary.Models
         public string Name { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
+
         public virtual ICollection<User> Users { get; set; }
+
+        public Channel()
+        {
+            Messages = new HashSet<Message>();
+            Users = new HashSet<User>();
+        }
     }
 }

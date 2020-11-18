@@ -29,6 +29,12 @@ namespace ServerLibrary.Models
 
         public virtual ICollection<Message> Messages { get; set; }
 
+        public User()
+        {
+            Channels = new HashSet<Channel>();
+            Messages = new HashSet<Message>();
+        }
+
         public static string CreatePassword(string input)
         {
             using (MD5 md5 = MD5.Create())

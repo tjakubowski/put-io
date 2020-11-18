@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
+using ServerLibrary.Models;
 using ServerLibrary.Server;
 using ServerLibrary.Server.Response;
 using ServerLibrary.Server.Request;
@@ -13,20 +16,107 @@ namespace ServerLibrary.Client
 {
     public class Client
     {
-        protected TcpClient tcpC;
-        protected Stream stream;
-        protected bool loggedIn;
-        protected bool conn;
+        protected TcpClient tcpClient;
+        protected NetworkStream stream;
 
-        public Client()
+        public Action ReceivedDataAction;
+
+        public ObservableCollection<Channel> Channels;
+        public Channel Channel;
+
+        public async void HandleResponses()
         {
-            tcpC = new TcpClient("127.0.0.1", 2048);
-            stream = tcpC.GetStream();
-            loggedIn = false;
-            conn = false;
+            while (tcpClient.Connected)
+            {
+                try
+                {
+                    var readBytes = await ReadBytes();
+                    var response = MessageSerializer.Deserialize(new TcpMessage(readBytes));
+
+                    if (response is ChannelsResponse channelsResponse && channelsResponse.Result)
+                        Channels = new ObservableCollection<Channel>(channelsResponse.Channels);
+
+                    else if (response is ChannelResponse channelResponse && channelResponse.Result)
+                        Channel = channelResponse.Channel;
+
+                    ReceivedDataAction();
+                }
+                catch (IOException)
+                {
+                    return;
+                }
+            }
         }
 
-        public void StartClient()
+        public void AddChannel(string name)
+        {
+            var request = new AddChannelRequest(name);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+        }
+
+        public void ChangeChannel(int id)
+        {
+            var request = new ChannelRequest(id);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+        }
+
+        public Client(string hostname, int port)
+        {
+            tcpClient = new TcpClient(hostname, port);
+            stream = tcpClient.GetStream();
+        }
+
+        public async Task<LoginResponse> SendLoginRequest(string username, string password)
+        {
+            var request = new LoginRequest(username, password);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+
+            var responseData = await ReadBytes();
+            var response = (LoginResponse)MessageSerializer.Deserialize(new TcpMessage(responseData));
+
+            if (response.Result)
+                Channels = new ObservableCollection<Channel>(response.Channels);
+
+            return response;
+        }
+
+        public async Task<RegisterResponse> SendRegisterRequest(string username, string password)
+        {
+            var request = new RegisterRequest(username, password);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+
+            var responseData = await ReadBytes();
+            var response = (RegisterResponse)MessageSerializer.Deserialize(new TcpMessage(responseData));
+
+            if (response.Result)
+                Channels = new ObservableCollection<Channel>(response.Channels);
+
+            return response;
+        }
+
+        public void SendChannelRequest()
+        {
+            ChangeChannel(Channels[0].Id);
+        }
+
+        public async Task<byte[]> ReadBytes()
+        {
+            MemoryStream messageStream = new MemoryStream();
+            var buffer = new byte[2048];
+            do
+            {
+                var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                await messageStream.WriteAsync(buffer, 0, bytesRead);
+            } while (stream.DataAvailable);
+
+            return messageStream.ToArray();
+        }
+
+        /*public void StartClient()
         {
             try
             {
@@ -47,9 +137,13 @@ namespace ServerLibrary.Client
                 HandleClient();
                 //TODO close.client()
             });
+        }*/
+
+        private void HandleClient()
+        {
         }
 
-        protected void HandleClient()
+        /*protected void HandleClient()
         {
             while (!loggedIn)
             {
@@ -111,9 +205,9 @@ namespace ServerLibrary.Client
                 }
             }
 
-        }
+        }*/
 
-        public void SendLoginData(string log, string pass)
+        /*public void SendLoginData(string log, string pass)
         {
             try
             {
@@ -126,9 +220,9 @@ namespace ServerLibrary.Client
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
             }
 
-        }
+        }*/
 
-        public void SendRegisterData(string log, string pass)
+        /*public void SendRegisterData(string log, string pass)
         {
             try
             {
@@ -141,21 +235,12 @@ namespace ServerLibrary.Client
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
             }
         }
-        public byte[] ReadBytes()
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                stream.CopyTo(ms);
-                return ms.ToArray();
-            }
-        }
-
 
         public void SendMessage(string msg)
         {
             MessageForm form = new MessageForm(msg);
             TcpMessage message = MessageSerializer.Serialize(form);
             stream.Write(message.Data, 0, message.Data.Length);
-        }
+        }*/
     }
 }

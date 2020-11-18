@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -45,7 +46,7 @@ namespace ServerLibrary.Server
 
         protected override void HandleClientSession(TcpServerSession session)
         {
-            while (session.Client.Connected && session.User == null)
+            while (session.Client.Connected)
             {
                 try
                 {
@@ -84,8 +85,9 @@ namespace ServerLibrary.Server
                     else if (request is RemoveChannelUserRequest removeChannelUserRequest)
                         RemoveChannelUser(session, removeChannelUserRequest);
                 }
-                catch (ArgumentNullException)
+                catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     return;
                 }
             }
@@ -100,12 +102,13 @@ namespace ServerLibrary.Server
 
                 using (var context = new DatabaseContext())
                 {
-                    var user = context.Users.SingleOrDefault(u => u.Id == session.User.Id);
+                    var user = context.Users.Single(u => u.Id == session.User.Id);
                     var channel = new Channel()
                     {
                         Name = addChannelRequest.Name
                     };
-                    channel.Users.Add(user);
+                    channel.Users = new List<User>() {user};
+
                     context.Channels.Add(channel);
                     context.SaveChanges();
 
@@ -113,11 +116,12 @@ namespace ServerLibrary.Server
                         $"[New channel] Admin {session.User.Username} created a new channel {channel.Name}");
                 }
             }
-            catch
+            catch(Exception e)
             {
                 var response = new AddChannelResponse(false, "Channel not created");
                 var serializedResponse = MessageSerializer.Serialize(response);
                 session.SendBytes(serializedResponse.Data);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -351,7 +355,12 @@ namespace ServerLibrary.Server
                 using (var context = new DatabaseContext())
                 {
                     var hash = User.CreatePassword(request.Password);
-                    session.User = context.Users.SingleOrDefault(u => u.Username == request.Username && u.Password == hash);
+                    session.User = context.Users.Single(u => u.Username == request.Username && u.Password == hash);
+
+                    var channels = context.Channels
+                        .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
+                        .ToList();
+                    response.Channels = channels;
 
                     Console.WriteLine($"[Login] User {session.User.Username} logged in");
                 }
@@ -359,7 +368,7 @@ namespace ServerLibrary.Server
             catch
             {
                 response.Result = false;
-                response.Message = $"User {request.Username} not found";
+                response.Message = $"User with that username and password doesn't exist'";
             }
             finally
             {
@@ -418,6 +427,11 @@ namespace ServerLibrary.Server
                     context.SaveChanges();
 
                     session.User = user;
+
+                    var channels = context.Channels
+                        .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
+                        .ToList();
+                    response.Channels = channels;
 
                     Console.WriteLine($"[Register] User {user.Username} registered");
                 }

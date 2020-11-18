@@ -10,6 +10,7 @@ namespace ServerLibrary
     {
         public DatabaseContext() : base("Default")
         {
+            Configuration.ProxyCreationEnabled = false;
             Database.SetInitializer<DatabaseContext>(null);
         }
 
@@ -107,7 +108,6 @@ namespace ServerLibrary
             messages.ToTable("Message").HasKey(message => message.Id);
             messages.Property(message => message.Text).IsRequired();
 
-
             messages.HasRequired(message => message.User)
                 .WithMany(user => user.Messages)
                 .HasForeignKey(message => message.UserId);
@@ -124,9 +124,9 @@ namespace ServerLibrary
                 .WithMany(channel => channel.Users)
                 .Map(manyToMany =>
                 {
-                    manyToMany.ToTable("UserChannel");
                     manyToMany.MapLeftKey("UserId");
                     manyToMany.MapRightKey("ChannelId");
+                    manyToMany.ToTable("UserChannel");
                 });
         }
     }

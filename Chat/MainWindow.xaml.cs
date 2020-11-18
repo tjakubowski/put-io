@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Chat.Pages;
 
 namespace Chat
 {
@@ -10,6 +11,12 @@ namespace Chat
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            WindowManager.MainWindow = this;
+            WindowManager.OpenPage(new AuthenticationPage());
         }
     }
 }

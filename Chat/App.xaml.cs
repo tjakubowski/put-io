@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ServerLibrary.Client;
 
 namespace Chat
 {
@@ -13,5 +14,10 @@ namespace Chat
     /// </summary>
     public partial class App : Application
     {
+        public static Client Client;
+        public App()
+        {
+            Client = new Client("127.0.0.1", 2048);
+        }
     }
 }
