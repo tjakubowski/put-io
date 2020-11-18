@@ -24,8 +24,9 @@ namespace App
         Client client;
         public MainWindow()
         {
-            try { 
-                client = new Client();
+            client = new Client();
+            try {
+                client.StartClient();
             }catch(Exception e)
             {
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));

@@ -6,6 +6,8 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using ServerLibrary.Server;
+using ServerLibrary.Server.Response;
+using ServerLibrary.Server.Request;
 
 namespace ServerLibrary.Client
 {
@@ -15,7 +17,6 @@ namespace ServerLibrary.Client
         protected Stream stream;
         protected bool loggedIn;
         protected bool conn;
-        private byte[] readBytes;
 
         public Client()
         {
@@ -54,18 +55,26 @@ namespace ServerLibrary.Client
             {
                 try
                 {
-                    //#TO DO stream.Read();
-                    var request = MessageSerializer.Deserialize(new TcpMessage(readBytes));
-                    //if ('OK')     #TO DO
-                    //{
-                    //    loggedIn = true;
-                    //}
+                    var readBytes = ReadBytes();
+                    var response = MessageSerializer.Deserialize(new TcpMessage(readBytes));
+                    if (response is LoginResponse loginResponse)
+                    {
+                        if (loginResponse.Result)
+                        {
+                            loggedIn = true;
+                        }
+                    }else if(response is RegisterResponse registerResponse)
+                    {
+                        if (registerResponse.Result)
+                        {
+                            
+                        }
+                    }
                 }catch(ArgumentNullException)
                 {
                     continue;
                 }
             }
-
 
             if (loggedIn)
             {
@@ -74,29 +83,26 @@ namespace ServerLibrary.Client
                     try
                     {
                         
-                        //TcpMessage msg = stream.Read();
-                        //var request = MessageSerializer.Deserialize(new TcpMessage(readBytes));
+                        var msg = ReadBytes();
+                        var response = MessageSerializer.Deserialize(new TcpMessage(readBytes));
 
-                        //if (request is AuthenticationForm authenticationForm)
-                        //{
-                        //    switch (authenticationForm.AuthenticationType)
-                        //    {
-                        //        case AuthenticationType.Login:
-                        //            Login(session, authenticationForm);
-                        //            break;
-                        //        case AuthenticationType.Register:
-                        //            Register(session, authenticationForm);
-                        //            break;
-                        //    }
-                        //}
+                        if (response is AuthenticationForm authenticationForm)
+                        {
+                            switch (authenticationForm.AuthenticationType)
+                            {
+                                case AuthenticationType.Login:
+                                    Login(session, authenticationForm);
+                                    break;
+                                case AuthenticationType.Register:
+                                    Register(session, authenticationForm);
+                                    break;
+                            }
+                        }
 
-                        //if (session.User == null)
-                        //    continue;
-
-                        //if (request is ChangePasswordForm changePasswordForm)
-                        //{
-                        //    ChangePassword(session, changePasswordForm);
-                        //}
+                        if (request is ChangePasswordForm changePasswordForm)
+                        {
+                            ChangePassword(session, changePasswordForm);
+                        }
                     }
                     catch (ArgumentNullException)
                     {
@@ -111,7 +117,7 @@ namespace ServerLibrary.Client
         {
             try
             {
-                AuthenticationForm form = new AuthenticationForm(log, pass, AuthenticationType.Login);
+                LoginRequest form = new LoginRequest(log, pass);
                 TcpMessage login_msg = MessageSerializer.Serialize(form);
                 stream.Write(login_msg.Data, 0, login_msg.Data.Length);
             }
@@ -126,13 +132,21 @@ namespace ServerLibrary.Client
         {
             try
             {
-                AuthenticationForm form = new AuthenticationForm(log, pass, AuthenticationType.Register);
+                RegisterRequest form = new RegisterRequest(log, pass);
                 TcpMessage reg_msg = MessageSerializer.Serialize(form);
                 stream.Write(reg_msg.Data, 0, reg_msg.Data.Length);
             }
             catch (Exception e)
             {
                 Console.WriteLine(String.Format("Error: {0}", e.StackTrace));
+            }
+        }
+        public byte[] ReadBytes()
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
             }
         }
 
