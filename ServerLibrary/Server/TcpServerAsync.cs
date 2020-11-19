@@ -205,7 +205,7 @@ namespace ServerLibrary.Server
 
                     Console.WriteLine($"[Add channel user] User {user.Username} has been added to the channel {channel.Name}");
 
-                    UpdateChannels();
+                    UpdateChannels(user.Id);
                 }
             }
             catch
@@ -295,6 +295,31 @@ namespace ServerLibrary.Server
                     }
 
                     Console.WriteLine($"[Channels update] Updated all channels for {sessions.Count} users");
+                }
+            }
+            catch
+            {
+                Console.WriteLine($"[Channels update] Update not sent");
+            }
+        }
+
+        private void UpdateChannels(int userId)
+        {
+            try
+            {
+                using (var context = new DatabaseContext())
+                {
+                    var session = sessions.Single(s => s.User.Id == userId);
+
+                    var channels = context.Channels
+                        .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
+                        .ToList();
+
+                    var channelResponse = new ChannelsResponse(channels);
+                    var serializedResponse = MessageSerializer.Serialize(channelResponse);
+                    session.SendBytes(serializedResponse.Data);
+
+                    Console.WriteLine($"[Channels update] Updated all channels for {session.User.Username} user");
                 }
             }
             catch
