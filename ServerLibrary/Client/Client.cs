@@ -34,7 +34,10 @@ namespace ServerLibrary.Client
                     var response = MessageSerializer.Deserialize(new TcpMessage(readBytes));
 
                     if (response is ChannelsResponse channelsResponse && channelsResponse.Result)
+                    {
                         Channels = new ObservableCollection<Channel>(channelsResponse.Channels);
+                        Channel = Channels.FirstOrDefault(ch => ch.Id == Channel.Id) ?? Channels[0];
+                    }
 
                     else if (response is ChannelResponse channelResponse && channelResponse.Result)
                         Channel = channelResponse.Channel;
