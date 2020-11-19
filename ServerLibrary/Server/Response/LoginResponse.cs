@@ -8,6 +8,7 @@ namespace ServerLibrary.Server.Response
     public class LoginResponse : BaseResponse
     {
         public List<Channel> Channels;
+        public User User;
 
         public LoginResponse(bool result, string message = "") : base(result, message)
         {

@@ -363,6 +363,7 @@ namespace ServerLibrary.Server
                         .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
                         .ToList();
                     response.Channels = channels;
+                    response.User = session.User;
 
                     Console.WriteLine($"[Login] User {session.User.Username} logged in");
                 }
