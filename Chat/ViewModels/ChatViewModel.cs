@@ -10,6 +10,18 @@ namespace Chat.ViewModels
     {
         public ObservableCollection<Channel> Channels => App.Client.Channels;
         public Channel Channel => App.Client.Channel;
+        public User User => App.Client.User;
+
+        public bool IsAdmin
+        {
+            get => User.Admin;
+        }
+
+        public string NewChannelUserName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
 
         public string NewChannelName
         {
@@ -41,6 +53,11 @@ namespace Chat.ViewModels
         public RelayCommand SendMessageCommand => new RelayCommand(o =>
         {
             App.Client.SendMessage(Message);
+        });
+        
+        public RelayCommand AddChannelUserNameCommand => new RelayCommand(o =>
+        {
+            App.Client.AddUser(NewChannelUserName);
         });
 
         public ChatViewModel()

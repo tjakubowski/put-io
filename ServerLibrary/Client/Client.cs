@@ -21,6 +21,7 @@ namespace ServerLibrary.Client
 
         public Action ReceivedDataAction;
 
+        public User User;
         public ObservableCollection<Channel> Channels;
         public Channel Channel;
 
@@ -68,6 +69,13 @@ namespace ServerLibrary.Client
             stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
         }
 
+        public void AddUser(string username)
+        {
+            var request = new AddChannelUserRequest(username, Channel.Id);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+        }
+
         public Client(string hostname, int port)
         {
             tcpClient = new TcpClient(hostname, port);
@@ -83,8 +91,12 @@ namespace ServerLibrary.Client
             var responseData = await ReadBytes();
             var response = (LoginResponse)MessageSerializer.Deserialize(new TcpMessage(responseData));
 
-            if (response.Result)
+            if (response.Result) 
+            { 
                 Channels = new ObservableCollection<Channel>(response.Channels);
+                User = response.User;
+            }
+                
 
             return response;
         }

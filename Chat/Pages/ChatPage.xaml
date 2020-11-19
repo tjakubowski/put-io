@@ -11,6 +11,9 @@
     <Page.DataContext>
         <viewModels:ChatViewModel/>
     </Page.DataContext>
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" MaxWidth="200"/>
@@ -35,8 +38,10 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <TextBox Text="{Binding NewChannelName}"/>
-                <Button Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
+                <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                    <TextBox Text="{Binding NewChannelName}"/>
+                    <Button Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
+                </StackPanel>
             </StackPanel>
         </Border>
 
@@ -62,6 +67,10 @@
 
         <!-- Right sidebar -->
         <Border Background="#FF2F3136" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
+            <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                <TextBox Text="{Binding NewChannelUserName}"/>
+                <Button Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
+            </StackPanel>
         </Border>
     </Grid>
 
