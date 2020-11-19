@@ -27,30 +27,39 @@
         </Grid.RowDefinitions>
 
         <!-- Left sidebar-->
-        <Border Background="#FF2F3136" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+        <Border Background="#FF2F3136" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Padding="8">
             <StackPanel>
-                <ListBox ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}">
+                <ListBox Padding="0" Background="#FF2F3136" BorderBrush="{x:Null}" ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" />
-                            </StackPanel>
+                            <TextBlock Padding="16, 8" Margin="0 2 0 0" Background="#FF4D5563" Foreground="Gainsboro" Text="{Binding Name}" Panel.ZIndex="-5" MinWidth="100" MinHeight="10"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                    <TextBox Text="{Binding NewChannelName}"/>
-                    <Button Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
+                <StackPanel Margin="0 16" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                    <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelName}"/>
+                    <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- Center -->
-        <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0">
+        <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
             <ItemsControl ItemsSource="{Binding Channel.Messages}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="8" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
                             <TextBlock Text="{Binding Text}" Foreground="White" />
                         </StackPanel>
@@ -66,10 +75,10 @@
         </Border>
 
         <!-- Right sidebar -->
-        <Border Background="#FF2F3136" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
-            <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                <TextBox Text="{Binding NewChannelUserName}"/>
-                <Button Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
+        <Border Background="#FF2F3136" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Padding="8">
+            <StackPanel  Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelUserName}"/>
+                <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
             </StackPanel>
         </Border>
     </Grid>
