@@ -13,12 +13,12 @@ namespace ServerLibrary.Server.Request
     public abstract class BaseChannelUserRequest
     {
         public ChannelUserActionType ChannelUserActionType;
-        public int UserId;
+        public string Username;
         public int ChannelId;
 
-        protected BaseChannelUserRequest(int userId, int channelId, ChannelUserActionType channelUserActionType)
+        protected BaseChannelUserRequest(string username, int channelId, ChannelUserActionType channelUserActionType)
         {
-            UserId = userId;
+            Username = username;
             ChannelId = channelId;
             ChannelUserActionType = channelUserActionType;
         }
