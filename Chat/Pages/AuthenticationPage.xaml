@@ -44,7 +44,7 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Margin="0,8,4,8" Text="Password"/>
             <TextBox x:Name="PasswordTextBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="0 8" Text="{Binding Password}"/>
 
-            <Button x:Name="RegisterButton" Grid.Column="1" Grid.Row="2" Margin="0,8,4,8" Content="Register"/>
+            <Button x:Name="RegisterButton" Grid.Column="1" Grid.Row="2" Margin="0,8,4,8" Content="Register" Command="{Binding RegisterCommand}"/>
             <Button x:Name="LoginButton" Grid.Column="2" Grid.Row="2" Margin="4,8,0,8" Content="Login" Command="{Binding LoginCommand}"/>
         </Grid>
     </Grid>

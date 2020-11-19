@@ -21,12 +21,13 @@ namespace Chat.ViewModels
                 MessageBox.Show(loginResponse.Message);
         });
 
-        public RelayCommand Register => new RelayCommand(async o =>
+        public RelayCommand RegisterCommand => new RelayCommand(async o =>
         {
             var registerResponse = await App.Client.SendRegisterRequest(Username, Password);
 
             if (registerResponse.Result)
-                WindowManager.OpenPage(new ChatPage());
+                //WindowManager.OpenPage(new ChatPage());
+                MessageBox.Show("User registered");
             else
                 MessageBox.Show(registerResponse.Message);
         });

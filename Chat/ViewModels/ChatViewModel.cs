@@ -38,6 +38,11 @@ namespace Chat.ViewModels
             App.Client.AddChannel(NewChannelName);
         });
 
+        public RelayCommand SendMessageCommand => new RelayCommand(o =>
+        {
+            App.Client.SendMessage(Message);
+        });
+
         public ChatViewModel()
         {
             var client = App.Client;

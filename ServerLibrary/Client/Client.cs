@@ -47,6 +47,12 @@ namespace ServerLibrary.Client
                 }
             }
         }
+        public void SendMessage(string text)
+        {
+            var request = new AddMessageRequest(Channel.Id, text);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+        }
 
         public void AddChannel(string name)
         {
@@ -91,9 +97,6 @@ namespace ServerLibrary.Client
 
             var responseData = await ReadBytes();
             var response = (RegisterResponse)MessageSerializer.Deserialize(new TcpMessage(responseData));
-
-            if (response.Result)
-                Channels = new ObservableCollection<Channel>(response.Channels);
 
             return response;
         }

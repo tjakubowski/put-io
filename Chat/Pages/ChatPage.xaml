@@ -42,12 +42,21 @@
 
         <!-- Center -->
         <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0">
-            <TextBlock Text="{Binding Channel.Name}"/>
+            <ItemsControl ItemsSource="{Binding Channel.Messages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="8" Orientation="Horizontal">
+                            <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Text}" Foreground="White" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Border>
         <Border Grid.Column="1" Grid.Row="1" Background="#FF36393F" Padding="5">
             <DockPanel>
-                <Button x:Name="SendMessageButton" DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro">SEND</Button>
-                <TextBox x:Name="MessageBox" Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message}"/>
+                <Button DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding SendMessageCommand}">SEND</Button>
+                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message}"/>
             </DockPanel>
         </Border>
 

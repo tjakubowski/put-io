@@ -428,13 +428,6 @@ namespace ServerLibrary.Server
                     context.Users.Add(user);
                     context.SaveChanges();
 
-                    session.User = user;
-
-                    var channels = context.Channels
-                        .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
-                        .ToList();
-                    response.Channels = channels;
-
                     Console.WriteLine($"[Register] User {user.Username} registered");
                 }
             }
