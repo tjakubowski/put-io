@@ -114,6 +114,8 @@ namespace ServerLibrary.Server
 
                     Console.WriteLine(
                         $"[New channel] Admin {session.User.Username} created a new channel {channel.Name}");
+
+                    UpdateChannels();
                 }
             }
             catch(Exception e)
