@@ -10,10 +10,8 @@ namespace ServerLibrary.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id")]
         public int Id { get; set; }
 
-        [Column("text")]
         public string Text { get; set; }
 
         public int ChannelId{ get; set; }

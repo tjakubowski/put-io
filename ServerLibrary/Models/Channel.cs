@@ -11,10 +11,8 @@ namespace ServerLibrary.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id")]
         public int Id { get; set; }
 
-        [Column("name")]
         public string Name { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }

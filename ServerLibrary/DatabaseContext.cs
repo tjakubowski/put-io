@@ -11,6 +11,7 @@ namespace ServerLibrary
         public DatabaseContext() : base("Default")
         {
             Configuration.ProxyCreationEnabled = false;
+            Configuration.ValidateOnSaveEnabled = false;
             Database.SetInitializer<DatabaseContext>(null);
         }
 
@@ -67,13 +68,12 @@ namespace ServerLibrary
                 );
 
                 CREATE TABLE IF NOT EXISTS UserChannel (
-	                Id	INTEGER NOT NULL UNIQUE,
 	                UserId	INTEGER NOT NULL,
 	                ChannelId	INTEGER NOT NULL,
 
 	                FOREIGN KEY(ChannelId) REFERENCES Channel(Id) ON DELETE CASCADE,
 	                FOREIGN KEY(UserId) REFERENCES User(Id) ON DELETE CASCADE,
-	                PRIMARY KEY(Id AUTOINCREMENT)
+                    PRIMARY KEY(UserId, ChannelId)
                 );
             ";
 

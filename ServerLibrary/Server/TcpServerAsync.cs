@@ -103,11 +103,11 @@ namespace ServerLibrary.Server
                 using (var context = new DatabaseContext())
                 {
                     var user = context.Users.Single(u => u.Id == session.User.Id);
-                    var channel = new Channel()
+                    var channel = new Channel
                     {
-                        Name = addChannelRequest.Name
+                        Name = addChannelRequest.Name,
+                        Users = new List<User> { user }
                     };
-                    channel.Users = new List<User>() {user};
 
                     context.Channels.Add(channel);
                     context.SaveChanges();
