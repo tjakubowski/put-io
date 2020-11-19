@@ -197,7 +197,7 @@ namespace ServerLibrary.Server
 
                 using (var context = new DatabaseContext())
                 {
-                    var user = context.Users.SingleOrDefault(u => u.Id == addChannelUserRequest.UserId);
+                    var user = context.Users.SingleOrDefault(u => u.Username == addChannelUserRequest.Username);
                     var channel = context.Channels.SingleOrDefault(ch => ch.Id == addChannelUserRequest.ChannelId);
 
                     channel.Users.Add(user);
