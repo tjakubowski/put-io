@@ -167,7 +167,7 @@ namespace ServerLibrary.Server
 
                 using (var context = new DatabaseContext())
                 {
-                    var user = context.Users.SingleOrDefault(u => u.Id == removeChannelUserRequest.UserId);
+                    var user = context.Users.SingleOrDefault(u => u.Username == removeChannelUserRequest.Username);
                     var channel = context.Channels.SingleOrDefault(ch => ch.Id == removeChannelUserRequest.ChannelId);
 
                     channel.Users.Remove(user);
@@ -176,7 +176,7 @@ namespace ServerLibrary.Server
                     Console.WriteLine(
                         $"[Remove channel user] User {user.Username} has been removed from the channel {channel.Name}");
 
-                    var sessionToMove = sessions.SingleOrDefault(s => s.User.Id == removeChannelUserRequest.UserId );
+                    var sessionToMove = sessions.SingleOrDefault(s => s.User.Id == user.Id );
                     MoveToChannel(sessionToMove, new ChannelRequest(1));
                 }
             }
