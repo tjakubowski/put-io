@@ -91,8 +91,13 @@ namespace ServerLibrary.Client
 
         public Client(string hostname, int port)
         {
+            if(!IsPortValid(port))
+            {
+                throw new FormatException("Wrong port value");
+            }
+
             tcpClient = new TcpClient(hostname, port);
-            stream = tcpClient.GetStream();
+            stream = tcpClient.GetStream(); 
         }
 
         public async Task<LoginResponse> SendLoginRequest(string username, string password)
@@ -142,6 +147,10 @@ namespace ServerLibrary.Client
             } while (stream.DataAvailable);
 
             return messageStream.ToArray();
+        }
+        private bool IsPortValid(int port)
+        {
+            return port >= 1024 && port <= 49151;
         }
 
         private void HandleClient()
