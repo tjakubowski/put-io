@@ -16,7 +16,7 @@ namespace ServerLibrary.Server
     {
         private List<TcpServerSession> sessions;
 
-        public TcpServerAsync(IPAddress ipAddress, int port) : base(ipAddress, port)
+        public TcpServerAsync(IPAddress ipAddress, int port, string loggerPath = "./logs.txt") : base(ipAddress, port, loggerPath)
         {
             sessions = new List<TcpServerSession>();
         }
