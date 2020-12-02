@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ServerLibrary.Server
 {
-    class Logger
+    public class Logger
     {
         public string LogFilePath { get; set; }
 
@@ -39,7 +39,7 @@ namespace ServerLibrary.Server
 
         private string GetTimestamp()
         {
-            var today = new DateTime();
+            var today = DateTime.Now;
             return today.ToString("u");
         }
     }
