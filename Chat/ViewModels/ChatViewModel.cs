@@ -9,6 +9,7 @@ namespace Chat.ViewModels
     public class ChatViewModel : BaseViewModel
     {
         public ObservableCollection<Channel> Channels => App.Client.Channels;
+        public ObservableCollection<User> ChannelUsers => App.Client.ChannelUsers;
         public Channel Channel => App.Client.Channel;
         public User User => App.Client.User;
 
@@ -18,6 +19,12 @@ namespace Chat.ViewModels
         }
 
         public string NewChannelUserName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        public string NewUserPassword
         {
             get => Get<string>();
             set => Set(value);
@@ -60,10 +67,16 @@ namespace Chat.ViewModels
             App.Client.AddUser(NewChannelUserName);
         });
 
+        public RelayCommand ChangeUserPasswordCommand => new RelayCommand(o =>
+        {
+            App.Client.SendChangePasswordRequest(NewUserPassword);
+        });
+
         public ChatViewModel()
         {
             var client = App.Client;
-            client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); };
+            client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); OnPropertyChanged("ChannelUsers"); };
+
 
             client.SendChannelRequest();
             client.HandleResponses();
