@@ -87,7 +87,6 @@ namespace ServerLibrary.Server
                 }
                 catch (Exception e)
                 {
-                    Logger.Log(e);
                     return;
                 }
             }
