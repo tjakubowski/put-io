@@ -52,7 +52,6 @@
     <Compile Include="ClientTests.cs" />
     <Compile Include="LoggerTests.cs" />
     <Compile Include="ServerTests.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
