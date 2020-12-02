@@ -5,20 +5,22 @@ namespace ServerLibrary.Server
 {
     public class Logger
     {
+        public bool ConsoleLogEnabled { get; set; }
         public string LogFilePath { get; set; }
 
-        public Logger(string logFilePath)
+        public Logger(string logFilePath, bool consoleLogEnabled = true)
         {
             LogFilePath = logFilePath;
+            ConsoleLogEnabled = consoleLogEnabled;
         }
 
-        public void Log(string message, bool logToConsole = true)
+        public void Log(string message)
         {
             message = $"{GetTimestamp()} - {message}";
 
             LogToFile(message);
 
-            if (logToConsole)
+            if (ConsoleLogEnabled)
             {
                 LogToConsole(message);
             }
