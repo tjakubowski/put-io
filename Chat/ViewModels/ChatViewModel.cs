@@ -23,6 +23,12 @@ namespace Chat.ViewModels
             set => Set(value);
         }
 
+        public string NewUserPassword
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
         public string NewChannelName
         {
             get => Get<string>();
@@ -58,6 +64,11 @@ namespace Chat.ViewModels
         public RelayCommand AddChannelUserNameCommand => new RelayCommand(o =>
         {
             App.Client.AddUser(NewChannelUserName);
+        });
+
+        public RelayCommand ChangeUserPasswordCommand => new RelayCommand(o =>
+        {
+            App.Client.SendChangePasswordRequest(NewUserPassword);
         });
 
         public ChatViewModel()
