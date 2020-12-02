@@ -378,6 +378,9 @@ namespace ServerLibrary.Server
 
             try
             {
+                if (sessions.Exists(s => s.User?.Username == request.Username))
+                    throw new UnauthorizedAccessException();
+
                 using (var context = new DatabaseContext())
                 {
                     var hash = User.CreatePassword(request.Password);
@@ -391,6 +394,11 @@ namespace ServerLibrary.Server
 
                     Logger.Log($"[Login] User {session.User.Username} logged in");
                 }
+            }
+            catch(UnauthorizedAccessException e)
+            {
+                response.Result = false;
+                response.Message = $"User with that username is already logged in'";
             }
             catch
             {
