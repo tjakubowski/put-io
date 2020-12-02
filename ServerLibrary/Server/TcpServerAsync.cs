@@ -135,7 +135,7 @@ namespace ServerLibrary.Server
 
                 using (var context = new DatabaseContext())
                 {
-                    var channel = context.Channels.SingleOrDefault(ch => ch.Id == removeChannelRequest.ChannelId);
+                    var channel = context.Channels.Single(ch => ch.Id == removeChannelRequest.ChannelId);
                     context.Channels.Remove(channel);
                     context.SaveChanges();
 
@@ -166,8 +166,8 @@ namespace ServerLibrary.Server
 
                 using (var context = new DatabaseContext())
                 {
-                    var user = context.Users.SingleOrDefault(u => u.Username == removeChannelUserRequest.Username);
-                    var channel = context.Channels.SingleOrDefault(ch => ch.Id == removeChannelUserRequest.ChannelId);
+                    var user = context.Users.Single(u => u.Username == removeChannelUserRequest.Username);
+                    var channel = context.Channels.Single(ch => ch.Id == removeChannelUserRequest.ChannelId);
 
                     channel.Users.Remove(user);
                     context.SaveChanges();
@@ -175,7 +175,7 @@ namespace ServerLibrary.Server
                     Logger.Log(
                         $"[Remove channel user] User {user.Username} has been removed from the channel {channel.Name}");
 
-                    var sessionToMove = sessions.SingleOrDefault(s => s.User.Id == user.Id );
+                    var sessionToMove = sessions.Single(s => s.User.Id == user.Id );
                     MoveToChannel(sessionToMove, new ChannelRequest(1));
                 }
             }
@@ -196,8 +196,8 @@ namespace ServerLibrary.Server
 
                 using (var context = new DatabaseContext())
                 {
-                    var user = context.Users.SingleOrDefault(u => u.Username == addChannelUserRequest.Username);
-                    var channel = context.Channels.SingleOrDefault(ch => ch.Id == addChannelUserRequest.ChannelId);
+                    var user = context.Users.Single(u => u.Username == addChannelUserRequest.Username);
+                    var channel = context.Channels.Single(ch => ch.Id == addChannelUserRequest.ChannelId);
 
                     channel.Users.Add(user);
                     context.SaveChanges();
@@ -257,7 +257,7 @@ namespace ServerLibrary.Server
                         .Where(ch => ch.Id == channelId)
                         .Include(ch => ch.Users) // TODO: Exclude User.Password
                         .Include(ch => ch.Messages)
-                        .SingleOrDefault();
+                        .Single();
 
                     var channelResponse = new ChannelResponse(channel);
                     var serializedResponse = MessageSerializer.Serialize(channelResponse);
@@ -340,7 +340,7 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Users)
                         .Where(ch => ch.Users.Any(u => u.Id == session.User.Id))
                         .Include(ch => ch.Messages)
-                        .SingleOrDefault();
+                        .Single();
 
                     Logger.Log(
                         $"[Channel request] Client {session.User.Username} requested channel {channel.Name}");
@@ -449,7 +449,7 @@ namespace ServerLibrary.Server
             {
                 using (var context = new DatabaseContext())
                 {
-                    var generalChannel = context.Channels.SingleOrDefault(ch => ch.Id == 1);
+                    var generalChannel = context.Channels.Single(ch => ch.Id == 1);
 
                     var user = new User()
                     {
