@@ -24,6 +24,7 @@ namespace ServerLibrary.Client
         public User User;
         public ObservableCollection<Channel> Channels;
         public Channel Channel;
+        public ObservableCollection<User> ChannelUsers;
 
         public async void HandleResponses()
         {
@@ -42,6 +43,8 @@ namespace ServerLibrary.Client
 
                     else if (response is ChannelResponse channelResponse && channelResponse.Result)
                         Channel = channelResponse.Channel;
+
+                    ChannelUsers = new ObservableCollection<User>(Channel.Users);
 
                     ReceivedDataAction();
                 }
