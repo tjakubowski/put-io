@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ServerLibrary.DatabaseContext">
-    <Position X="16.25" Y="12" Width="3.5" />
+    <Position X="16" Y="11.75" Width="3.75" />
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAABACAAAEAEAAAAAAgAAAAAQAAEAA=</HashCode>
       <FileName>DatabaseContext.cs</FileName>
@@ -29,14 +29,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Models.User">
-    <Position X="16.5" Y="7.25" Width="1.5" />
+    <Position X="16" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAQAAAQAAIAAAAAACAAAAAQAAEAA=</HashCode>
       <FileName>Models\User.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.MessageSerializer">
-    <Position X="16.5" Y="10.25" Width="1.5" />
+    <Position X="16" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\MessageSerializer.cs</FileName>
@@ -78,7 +78,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.AddChannelRequest">
-    <Position X="18.25" Y="9" Width="1.5" />
+    <Position X="17.75" Y="9" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\AddChannelRequest.cs</FileName>
@@ -120,7 +120,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.ChannelRequest">
-    <Position X="18.25" Y="7.25" Width="1.5" />
+    <Position X="17.75" Y="7.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Server\Request\ChannelRequest.cs</FileName>
