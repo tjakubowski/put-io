@@ -77,7 +77,6 @@ namespace Chat.ViewModels
             var client = App.Client;
             client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); OnPropertyChanged("ChannelUsers"); };
 
-
             client.SendChannelRequest();
             client.HandleResponses();
         }
