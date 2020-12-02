@@ -6,6 +6,7 @@ namespace ServerLibrary.Server
 {
     public abstract class TcpServer
     {
+        protected Logger Logger;
         protected TcpListener _listener;
         protected IPAddress _ipAddress;
         private int _port;
@@ -64,6 +65,7 @@ namespace ServerLibrary.Server
         /// <param name="port">Server port number</param>
         protected TcpServer(IPAddress ipAddress, int port)
         {
+            Logger = new Logger("./logs.txt");
             _ipAddress = ipAddress;
             _port = port;
         }
