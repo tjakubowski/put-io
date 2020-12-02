@@ -7,7 +7,7 @@ namespace ServerLibrary.Server
 {
     public class TcpServerSync : TcpServer
     {
-        public TcpServerSync(IPAddress ipAddress, int port) : base(ipAddress, port)
+        public TcpServerSync(IPAddress ipAddress, int port, string loggerPath) : base(ipAddress, port, loggerPath)
         {
         }
 

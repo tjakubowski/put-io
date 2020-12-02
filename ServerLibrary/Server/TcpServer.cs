@@ -38,6 +38,9 @@ namespace ServerLibrary.Server
             {
                 if (_isListening)
                     throw new Exception("Server port cannot be changed while the server is running");
+
+                if (!IsPortValid(value))
+                    throw new Exception("Server port is not valid");
                 
                 _port = value;
             }
@@ -63,11 +66,12 @@ namespace ServerLibrary.Server
         /// </summary>
         /// <param name="ipAddress">Server IP address</param>
         /// <param name="port">Server port number</param>
-        protected TcpServer(IPAddress ipAddress, int port)
+        /// <param name="loggerPath"></param>
+        protected TcpServer(IPAddress ipAddress, int port, string loggerPath = "./logs.txt")
         {
-            Logger = new Logger("./logs.txt");
-            _ipAddress = ipAddress;
-            _port = port;
+            Logger = new Logger(loggerPath);
+            IP = ipAddress;
+            Port = port;
         }
 
         /// <summary>
@@ -80,6 +84,11 @@ namespace ServerLibrary.Server
             _isListening = true;
 
             Console.WriteLine($"Server is listening at {IP}:{Port}");
+        }
+
+        private bool IsPortValid(int port)
+        {
+            return port >= 1024 && port <= 49151;
         }
 
         /// <summary>

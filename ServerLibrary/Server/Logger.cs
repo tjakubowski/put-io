@@ -6,7 +6,13 @@ namespace ServerLibrary.Server
     public class Logger
     {
         public bool ConsoleLogEnabled { get; set; }
-        public string LogFilePath { get; set; }
+        private string _logFilePath;
+
+        public string LogFilePath
+        {
+            get => _logFilePath;
+            set => _logFilePath = Path.GetFullPath(value);
+        }
 
         public Logger(string logFilePath, bool consoleLogEnabled = true)
         {
