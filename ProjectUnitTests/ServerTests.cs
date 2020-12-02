@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ServerLibrary.Client;
 using System;
 using System.Net;
 using ServerLibrary.Server;

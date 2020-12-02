@@ -11,7 +11,7 @@ namespace ProjectUnitTests
         [TestMethod]
         public void ServerWrongPortTest()
         {
-            Client client = new Client()
+//            Client client = new Client()
         }
     }
 }
