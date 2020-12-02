@@ -35,7 +35,7 @@ namespace ServerLibrary.Server
             TcpServerSession session = new TcpServerSession(tcpClient);
             sessions.Add(session);
 
-            Console.WriteLine($"Client connected");
+            Logger.Log($"Client connected");
 
             Task.Run(() =>
             {
@@ -87,7 +87,7 @@ namespace ServerLibrary.Server
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Logger.Log(e);
                     return;
                 }
             }
@@ -112,7 +112,7 @@ namespace ServerLibrary.Server
                     context.Channels.Add(channel);
                     context.SaveChanges();
 
-                    Console.WriteLine(
+                    Logger.Log(
                         $"[New channel] Admin {session.User.Username} created a new channel {channel.Name}");
 
                     UpdateChannels();
@@ -123,7 +123,7 @@ namespace ServerLibrary.Server
                 var response = new AddChannelResponse(false, "Channel not created");
                 var serializedResponse = MessageSerializer.Serialize(response);
                 session.SendBytes(serializedResponse.Data);
-                Console.WriteLine(e.Message);
+                Logger.Log(e.Message);
             }
         }
 
@@ -140,7 +140,7 @@ namespace ServerLibrary.Server
                     context.Channels.Remove(channel);
                     context.SaveChanges();
 
-                    Console.WriteLine(
+                    Logger.Log(
                         $"[Remove channel] Admin {session.User.Username} deleted {channel.Name} channel");
 
                     var filteredSessions = sessions.Where(s => s.ChannelId == removeChannelRequest.ChannelId && s.User != null);
@@ -173,7 +173,7 @@ namespace ServerLibrary.Server
                     channel.Users.Remove(user);
                     context.SaveChanges();
 
-                    Console.WriteLine(
+                    Logger.Log(
                         $"[Remove channel user] User {user.Username} has been removed from the channel {channel.Name}");
 
                     var sessionToMove = sessions.SingleOrDefault(s => s.User.Id == user.Id );
@@ -203,7 +203,7 @@ namespace ServerLibrary.Server
                     channel.Users.Add(user);
                     context.SaveChanges();
 
-                    Console.WriteLine($"[Add channel user] User {user.Username} has been added to the channel {channel.Name}");
+                    Logger.Log($"[Add channel user] User {user.Username} has been added to the channel {channel.Name}");
 
                     UpdateChannels(user.Id);
                 }
@@ -232,7 +232,7 @@ namespace ServerLibrary.Server
                     context.Messages.Add(message);
                     context.SaveChanges();
 
-                    Console.WriteLine(
+                    Logger.Log(
                         $"[New message] Client {session.User.Username} sent a new message on channel {session.ChannelId}");
 
                     UpdateChannel(addMessageRequest.ChannelId);
@@ -266,12 +266,12 @@ namespace ServerLibrary.Server
                     foreach (var session in filteredSessions)
                         session.SendBytes(serializedResponse.Data);
 
-                    Console.WriteLine($"[Channel update] Updated channel '{channel.Name}' for {filteredSessions.Count} users");
+                    Logger.Log($"[Channel update] Updated channel '{channel.Name}' for {filteredSessions.Count} users");
                 }
             }
             catch
             {
-                Console.WriteLine($"[Channel update] Update not sent");
+                Logger.Log($"[Channel update] Update not sent");
             }
         }
 
@@ -294,12 +294,12 @@ namespace ServerLibrary.Server
                         session.SendBytes(serializedResponse.Data);
                     }
 
-                    Console.WriteLine($"[Channels update] Updated all channels for {sessions.Count} users");
+                    Logger.Log($"[Channels update] Updated all channels for {sessions.Count} users");
                 }
             }
             catch
             {
-                Console.WriteLine($"[Channels update] Update not sent");
+                Logger.Log($"[Channels update] Update not sent");
             }
         }
 
@@ -319,12 +319,12 @@ namespace ServerLibrary.Server
                     var serializedResponse = MessageSerializer.Serialize(channelResponse);
                     session.SendBytes(serializedResponse.Data);
 
-                    Console.WriteLine($"[Channels update] Updated all channels for {session.User.Username} user");
+                    Logger.Log($"[Channels update] Updated all channels for {session.User.Username} user");
                 }
             }
             catch
             {
-                Console.WriteLine($"[Channels update] Update not sent");
+                Logger.Log($"[Channels update] Update not sent");
             }
         }
 
@@ -343,7 +343,7 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .SingleOrDefault();
 
-                    Console.WriteLine(
+                    Logger.Log(
                         $"[Channel request] Client {session.User.Username} requested channel {channel.Name}");
 
                     response.Channel = channel;
@@ -368,9 +368,9 @@ namespace ServerLibrary.Server
             session.Client.Close();
 
             if(session.User != null)
-                Console.WriteLine($"[Logout] User {session.User.Username} logged out.");
+                Logger.Log($"[Logout] User {session.User.Username} logged out.");
 
-            Console.WriteLine($"[Close Session] Client disconnected");
+            Logger.Log($"[Close Session] Client disconnected");
         }
 
         private void Login(TcpServerSession session, LoginRequest request)
@@ -390,7 +390,7 @@ namespace ServerLibrary.Server
                     response.Channels = channels;
                     response.User = session.User;
 
-                    Console.WriteLine($"[Login] User {session.User.Username} logged in");
+                    Logger.Log($"[Login] User {session.User.Username} logged in");
                 }
             }
             catch
@@ -419,7 +419,7 @@ namespace ServerLibrary.Server
                     context.Entry(session.User).State = EntityState.Modified;
                     context.SaveChanges();
 
-                    Console.WriteLine($"[ChangePassword] User {session.User.Username} changed password");
+                    Logger.Log($"[ChangePassword] User {session.User.Username} changed password");
                 }
             }
             catch
@@ -454,7 +454,7 @@ namespace ServerLibrary.Server
                     context.Users.Add(user);
                     context.SaveChanges();
 
-                    Console.WriteLine($"[Register] User {user.Username} registered");
+                    Logger.Log($"[Register] User {user.Username} registered");
                 }
             }
             catch
