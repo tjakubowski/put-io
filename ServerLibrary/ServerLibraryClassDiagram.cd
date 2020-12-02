@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ServerLibrary.DatabaseContext">
-    <Position X="21.75" Y="9" Width="1.5" />
+    <Position X="16.25" Y="12" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAABACAAAEAEAAAAAAgAAAAAQAAEAA=</HashCode>
       <FileName>DatabaseContext.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Client.Client">
-    <Position X="20" Y="7.25" Width="1.5" />
+    <Position X="20" Y="7.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AgEBACIgAAgAAAAAACEAAAAAIAIAAEAgCAAAAAAAEAg=</HashCode>
+      <HashCode>AgEBCCIgAAgAACAAACEAAAAAIAIAAEAgCAAAAAAAEAg=</HashCode>
       <FileName>Client\Client.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Models.Channel">
-    <Position X="28.75" Y="4" Width="1.5" />
+    <Position X="27.75" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAA=</HashCode>
       <FileName>Models\Channel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Models.Message">
-    <Position X="28.75" Y="5" Width="1.5" />
+    <Position X="27.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAADAAAgAAAAAAAAAAAAAAgAAAAAAAAAAAQACAAAAAA=</HashCode>
       <FileName>Models\Message.cs</FileName>
@@ -36,70 +36,70 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.MessageSerializer">
-    <Position X="16.5" Y="12.25" Width="1.5" />
+    <Position X="16.5" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\MessageSerializer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.TcpMessage">
-    <Position X="21.75" Y="7.25" Width="1.5" />
+    <Position X="22.75" Y="7.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\TcpMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.TcpServer">
-    <Position X="11.75" Y="6" Width="1.5" />
+    <Position X="11.75" Y="6" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAACACAAgACAAAAAIIKAgAAAAAAIAAAAAAAIA=</HashCode>
+      <HashCode>AAAACAAAACICAAgACAAAAAIIKAgAAAAAAIAAAAAAAIA=</HashCode>
       <FileName>Server\TcpServer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.TcpServerAsync">
-    <Position X="13" Y="10.5" Width="1.5" />
+    <Position X="13" Y="10.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAEAGCACAAoAAQAAEIAAIIAAABAAAAAAAQAAAQAgA=</HashCode>
       <FileName>Server\TcpServerAsync.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.TcpServerSession">
-    <Position X="28.75" Y="6" Width="1.5" />
+    <Position X="25.25" Y="7.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AACBAAAAAAAAAAAAAEAAAAAgAAAAAMAACQQAAAAQAAQ=</HashCode>
       <FileName>Server\TcpServerSession.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.TcpServerSync">
-    <Position X="10.25" Y="10.5" Width="1.5" />
+    <Position X="10.25" Y="10.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAAAAAAIIAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\TcpServerSync.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.AddChannelRequest">
-    <Position X="18.25" Y="11.5" Width="1.5" />
+    <Position X="18.25" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\AddChannelRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.AddChannelUserRequest">
-    <Position X="0.75" Y="9.25" Width="1.5" />
+    <Position X="0.5" Y="9.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\AddChannelUserRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.AddMessageRequest">
-    <Position X="16.5" Y="10.25" Width="1.5" />
+    <Position X="22.75" Y="12.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAAAAA=</HashCode>
       <FileName>Server\Request\AddMessageRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.AuthenticationRequest">
-    <Position X="6" Y="6.5" Width="1.5" />
+    <Position X="7.5" Y="5.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAACQAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\Base\BaseAuthenticationRequest.cs</FileName>
@@ -113,63 +113,79 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.ChangePasswordRequest">
-    <Position X="21.75" Y="12.25" Width="1.5" />
+    <Position X="22.75" Y="9" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\ChangePasswordRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.ChannelRequest">
-    <Position X="18.25" Y="9.75" Width="1.5" />
+    <Position X="18.25" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Server\Request\ChannelRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.LoginRequest">
-    <Position X="5" Y="9.25" Width="1.5" />
+    <Position X="6.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\LoginRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.RegisterRequest">
-    <Position X="7" Y="9.25" Width="1.5" />
+    <Position X="8.5" Y="8.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\RegisterRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.RemoveChannelRequest">
-    <Position X="20" Y="12" Width="1.5" />
+    <Position X="22.75" Y="10.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Server\Request\RemoveChannelRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Request.RemoveChannelUserRequest">
-    <Position X="2.75" Y="9.25" Width="1.5" />
+    <Position X="3.25" Y="9.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\RemoveChannelUserRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.AddChannelResponse">
-    <Position X="5.5" Y="3.75" Width="1.5" />
+    <Position X="5.5" Y="3.25" Width="2" />
+    <InheritanceLine Type="ServerLibrary.Server.Response.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="2.247" />
+        <Point X="12.5" Y="2.622" />
+        <Point X="6.417" Y="2.622" />
+        <Point X="6.417" Y="3.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\AddChannelResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.AddChannelUserResponse">
-    <Position X="21.25" Y="4" Width="1.5" />
+    <Position X="21.75" Y="3.25" Width="2.25" />
+    <InheritanceLine Type="ServerLibrary.Server.Response.BaseResponse" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="2.247" />
+        <Point X="12.5" Y="2.622" />
+        <Point X="23.531" Y="2.622" />
+        <Point X="23.531" Y="3.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\AddChannelUserResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.AddMessageResponse">
-    <Position X="0.75" Y="4" Width="1.5" />
+    <Position X="0.75" Y="3.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\AddMessageResponse.cs</FileName>
@@ -183,21 +199,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.ChangePasswordResponse">
-    <Position X="18.5" Y="4" Width="1.5" />
+    <Position X="19" Y="3.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\ChangePasswordResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.ChannelResponse">
-    <Position X="15.75" Y="3.25" Width="1.5" />
+    <Position X="15.75" Y="3.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\ChannelResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.ChannelsResponse">
-    <Position X="12.75" Y="3.25" Width="1.5" />
+    <Position X="12.75" Y="3.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
       <FileName>Server\Response\ChannelsResponse.cs</FileName>
@@ -211,35 +227,42 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.RegisterResponse">
-    <Position X="8" Y="3.5" Width="1.5" />
+    <Position X="7.75" Y="3.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\RegisterResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.RemoveChannelResponse">
-    <Position X="3.25" Y="4" Width="1.5" />
+    <Position X="3.25" Y="3.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\RemoveChannelResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ServerLibrary.Server.Response.RemoveChannelUserResponse">
-    <Position X="23.75" Y="4" Width="1.5" />
+    <Position X="24.25" Y="3.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Response\RemoveChannelUserResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="ServerLibrary.Server.Logger">
+    <Position X="25.25" Y="11.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAAAAAAAAAAAQAAAAAAAAgAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Server\Logger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Enum Name="ServerLibrary.Server.Request.AuthenticationType">
-    <Position X="18.25" Y="7.25" Width="1.5" />
+    <Position X="20" Y="12.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Server\Request\Base\BaseAuthenticationRequest.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="ServerLibrary.Server.Request.ChannelUserActionType">
-    <Position X="18.25" Y="8.5" Width="1.5" />
+    <Position X="20" Y="13.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Server\Request\Base\BaseChannelUserRequest.cs</FileName>
