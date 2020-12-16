@@ -56,16 +56,19 @@
 
         <!-- Center -->
         <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
-            <ItemsControl ItemsSource="{Binding Channel.Messages}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Text}" Foreground="White" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Channel.Name}" Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" />
+                <ItemsControl ItemsSource="{Binding Channel.Messages}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Text}" Foreground="White" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
         </Border>
         <Border Grid.Column="1" Grid.Row="1" Background="#FF36393F" Padding="5">
             <DockPanel>
