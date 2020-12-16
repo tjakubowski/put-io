@@ -47,6 +47,8 @@ namespace Chat.ViewModels
             get => Get<Channel>();
             set
             {
+                if (value == null)
+                    value = Channels[0];
                 Set(value);
                 App.Client.ChangeChannel(SelectedChannel.Id);
             }

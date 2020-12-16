@@ -26,7 +26,6 @@ namespace Chat.ViewModels
             var registerResponse = await App.Client.SendRegisterRequest(Username, Password);
 
             if (registerResponse.Result)
-                //WindowManager.OpenPage(new ChatPage());
                 MessageBox.Show("User registered");
             else
                 MessageBox.Show(registerResponse.Message);
