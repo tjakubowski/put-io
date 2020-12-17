@@ -57,21 +57,25 @@ namespace Chat.ViewModels
         public RelayCommand AddChannelCommand => new RelayCommand(o =>
         {
             App.Client.AddChannel(NewChannelName);
+            NewChannelName = string.Empty;
         });
 
         public RelayCommand SendMessageCommand => new RelayCommand(o =>
         {
             App.Client.SendMessage(Message);
+            Message = string.Empty;
         });
         
         public RelayCommand AddChannelUserNameCommand => new RelayCommand(o =>
         {
             App.Client.AddUser(NewChannelUserName);
+            NewChannelUserName = string.Empty;
         });
 
         public RelayCommand ChangeUserPasswordCommand => new RelayCommand(o =>
         {
             App.Client.SendChangePasswordRequest(NewUserPassword);
+            NewUserPassword = string.Empty;
         });
 
         public ChatViewModel()
