@@ -64,6 +64,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding Text}" Foreground="White" />
+                                <Button Content="X" HorizontalAlignment="Right"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
