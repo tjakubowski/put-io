@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="Server\Logger.cs" />
+    <Compile Include="Server\Request\RemoveMessageRequest.cs" />
     <Compile Include="Server\Request\RemoveChannelRequest.cs" />
     <Compile Include="Server\Request\ChannelRequest.cs" />
     <Compile Include="Server\Request\AddChannelRequest.cs" />

@@ -4,6 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Chat.Pages"
+      xmlns:helper="clr-namespace:Chat.Helpers"
+      xmlns:ff="clr-namespace:FunctionalFun.UI"
       xmlns:viewModels="clr-namespace:Chat.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -29,9 +31,17 @@
         <!-- Left sidebar-->
         <Border Background="#FF2F3136" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Padding="8">
             <StackPanel>
-                <ListBox Padding="0" Background="#FF2F3136" BorderBrush="{x:Null}" ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}">
+                <ListBox helper:ListBoxAttachedProperties.DisableUnselectLast="True" SelectedIndex="0" Padding="0" Background="#FF2F3136" BorderBrush="{x:Null}" ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True" >
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False" >
+                                    <Setter Property="FontWeight" Value="Normal" />
+                                </Trigger>
+                            </Style.Triggers>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -43,37 +53,61 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Padding="16, 8" Margin="0 2 0 0" Background="#FF4D5563" Foreground="Gainsboro" Text="{Binding Name}" Panel.ZIndex="-5" MinWidth="100" MinHeight="10"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Padding="16, 8" Margin="0 2 0 0" Background="#FF4D5563" Foreground="Gainsboro" Text="{Binding Name}" Panel.ZIndex="-5" MinWidth="120" MinHeight="10"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <Button Padding="18, 6" Margin="0,8,0,0" Visibility="{Binding Path=IsChannelDeletable, Converter={StaticResource BoolToVisConverter}}" Command="{Binding DeleteChannelCommand}" Content="Usuń kanał"/>
                 <StackPanel Margin="0 16" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                    <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelName}"/>
-                    <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
+                    <TextBox MaxLength="10" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding AddChannelCommand}" Key="Return"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Padding="18, 6" Margin="0,8,0,0" Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- Center -->
-        <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
+        <ScrollViewer helper:ScrollHelper.AutoScroll="{Binding AutoScrollEvent}" Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding Channel.Name}" Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" />
+                <TextBlock Text="{Binding Channel.Name}" HorizontalAlignment="Center" FontWeight="Bold" />
                 <ItemsControl ItemsSource="{Binding Channel.Messages}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Text}" Foreground="White" />
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*">
+
+                                    </ColumnDefinition>
+                                    <ColumnDefinition Width="Auto">
+                                        
+                                    </ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical">
+                                    <TextBlock Text="{Binding User.Username}" Margin="0,0,8,0" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Text}" />
+                                </StackPanel>
+                                <StackPanel Visibility="{Binding Path=DataContext.IsAdmin, RelativeSource={RelativeSource AncestorType={x:Type local:ChatPage}}, Converter={StaticResource BoolToVisConverter}}">
+                                    <Button Grid.Column="1" Padding="18, 6" HorizontalAlignment="Right" Command="{Binding Path=DataContext.DeleteMessageCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ChatPage}}}" CommandParameter="{Binding}">Usuń</Button>
+                                </StackPanel>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-        </Border>
+        </ScrollViewer>
         <Border Grid.Column="1" Grid.Row="1" Background="#FF36393F" Padding="5">
             <DockPanel>
-                <Button DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding SendMessageCommand}">SEND</Button>
-                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message}"/>
+                <Button DockPanel.Dock="Right" Padding="18, 6" Command="{Binding SendMessageCommand}">Wyślij</Button>
+                <TextBox Padding="16,8" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SendMessageCommand}" Key="Return" />
+                    </TextBox.InputBindings>
+                </TextBox>
             </DockPanel>
         </Border>
 
@@ -84,17 +118,38 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Username}" Margin="0,0,8,0" FontWeight="Medium">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Active}" Value="True">
+                                                    <Setter Property="Foreground" Value="LawnGreen"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Active}" Value="False">
+                                                    <Setter Property="Foreground" Value="DarkGray"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <StackPanel  Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                    <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelUserName}"/>
-                    <Button Padding="18, 6" Margin="0,8,0,8" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
+                <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                    <TextBox Padding="16 8" Margin="0" Text="{Binding NewChannelUserName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding AddChannelUserNameCommand}" Key="Return" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                        <Button Padding="18, 6" Margin="0,8,0,8" Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
                 </StackPanel>
-                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewUserPassword}"/>
-                <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding ChangeUserPasswordCommand}" Content="Zmień hasło" HorizontalAlignment="Right" Width="138"/>
+                <PasswordBox Padding="16 8" Margin="0" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=NewUserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <PasswordBox.InputBindings>
+                        <KeyBinding Command="{Binding ChangeUserPasswordCommand}" Key="Return" />
+                    </PasswordBox.InputBindings>
+                </PasswordBox>
+                    <Button Padding="18, 6" Margin="0,8,0,0" Command="{Binding ChangeUserPasswordCommand}" Content="Zmień hasło" HorizontalAlignment="Right" Width="138"/>
             </StackPanel>
             
         </Border>

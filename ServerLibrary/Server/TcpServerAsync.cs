@@ -84,6 +84,9 @@ namespace ServerLibrary.Server
 
                     else if (request is RemoveChannelUserRequest removeChannelUserRequest)
                         RemoveChannelUser(session, removeChannelUserRequest);
+
+                    else if (request is RemoveMessageRequest removeMessageRequest)
+                        RemoveMessage(session, removeMessageRequest);
                 }
                 catch (Exception e)
                 {
@@ -152,6 +155,33 @@ namespace ServerLibrary.Server
             catch
             {
                 var response = new AddChannelResponse(false, "Channel not deleted");
+                var serializedResponse = MessageSerializer.Serialize(response);
+                session.SendBytes(serializedResponse.Data);
+            }
+        }
+
+        private void RemoveMessage(TcpServerSession session, RemoveMessageRequest removeMessageRequest)
+        {
+            try
+            {
+                if (!session.User.Admin)
+                    throw new Exception();
+
+                using (var context = new DatabaseContext())
+                {
+                    var message = context.Messages.Single(m => m.Id == removeMessageRequest.MessageId);
+                    context.Messages.Remove(message);
+                    context.SaveChanges();
+
+                    Logger.Log(
+                        $"[Remove message] Admin {session.User.Username} deleted {message.Id} message");
+
+                    UpdateChannel(message.ChannelId);
+                }
+            }
+            catch
+            {
+                var response = new AddChannelResponse(false, "Message not deleted");
                 var serializedResponse = MessageSerializer.Serialize(response);
                 session.SendBytes(serializedResponse.Data);
             }
@@ -259,6 +289,11 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .Single();
 
+                    var activeUsers = sessions.Where(s => s.User != null && s.User.Active).Select(s => s.User.Id).ToList();
+                    var users = channel.Users.ToList();
+                    users.ForEach(u => u.Active = activeUsers.Contains(u.Id));
+                    channel.Users = users;
+
                     var channelResponse = new ChannelResponse(channel);
                     var serializedResponse = MessageSerializer.Serialize(channelResponse);
 
@@ -268,7 +303,7 @@ namespace ServerLibrary.Server
                     Logger.Log($"[Channel update] Updated channel '{channel.Name}' for {filteredSessions.Count} users");
                 }
             }
-            catch
+            catch(Exception e)
             {
                 Logger.Log($"[Channel update] Update not sent");
             }
@@ -342,13 +377,18 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .Single();
 
+                    var activeUsers = sessions.Where(s=> s.User != null && s.User.Active).Select(s => s.User.Id).ToList();
+                    var users = channel.Users.ToList();
+                    users.ForEach(u => u.Active = activeUsers.Contains(u.Id));
+                    channel.Users = users;
+
                     Logger.Log(
                         $"[Channel request] Client {session.User.Username} requested channel {channel.Name}");
 
                     response.Channel = channel;
                 }
             }
-            catch
+            catch(Exception e)
             {
                 response.Result = false;
                 response.Message = "Channel access denied";
@@ -363,6 +403,16 @@ namespace ServerLibrary.Server
 
         private void CloseClientSession(TcpServerSession session)
         {
+            session.User.Active = false;
+
+            using (var context = new DatabaseContext())
+            {
+                var channels = context.Channels
+                    .Where(ch => ch.Users.Any(u => u.Id == session.User.Id))
+                    .ToList();
+                channels.ForEach(ch => UpdateChannel(ch.Id));
+            }
+
             sessions.Remove(session);
             session.Client.Close();
 
@@ -384,13 +434,17 @@ namespace ServerLibrary.Server
                 using (var context = new DatabaseContext())
                 {
                     var hash = User.CreatePassword(request.Password);
-                    session.User = context.Users.Single(u => u.Username == request.Username && u.Password == hash);
+                    session.User = context.Users
+                        .Single(u => u.Username == request.Username && u.Password == hash);
 
                     var channels = context.Channels
                         .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
                         .ToList();
                     response.Channels = channels;
                     response.User = session.User;
+
+                    session.User.Active = true;
+                    channels.ForEach(ch => UpdateChannel(ch.Id));
 
                     Logger.Log($"[Login] User {session.User.Username} logged in");
                 }

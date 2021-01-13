@@ -4,6 +4,23 @@
              xmlns:local="clr-namespace:Chat"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="Gainsboro" />
+            <Setter Property="Background" Value="#FF40444B" />
+            <Setter Property="BorderBrush" Value="{x:Null}"  />
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Foreground" Value="Gainsboro" />
+            <Setter Property="Background" Value="#FF40444B" />
+            <Setter Property="BorderBrush" Value="{x:Null}"  />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="Gainsboro" />
+            <Setter Property="Background" Value="#FF4D5563" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+        </Style>
     </Application.Resources>
 </Application>

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Chat.ViewModels;
+using System.Windows.Controls;
 
 namespace Chat.Pages
 {
@@ -11,6 +12,5 @@ namespace Chat.Pages
         {
             InitializeComponent();
         }
-
     }
 }
