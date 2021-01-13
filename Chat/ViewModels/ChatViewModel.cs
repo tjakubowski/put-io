@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using Chat.ViewModels.Base;
+using Prism.Commands;
 using ServerLibrary.Models;
 
 namespace Chat.ViewModels
@@ -31,7 +32,6 @@ namespace Chat.ViewModels
                 IsLogsChangedPropertyInViewModel = true;
                 return App.Client.Channel;
             }
-
         }
 
         public string NewChannelUserName
@@ -69,7 +69,12 @@ namespace Chat.ViewModels
                 App.Client.ChangeChannel(SelectedChannel.Id);
             }
         }
-        
+
+        public RelayCommand DeleteMsgCommand => new RelayCommand(o =>
+        {
+            var message = (Message) o;
+            App.Client.DeleteMessage(message);
+        });
 
         public RelayCommand AddChannelCommand => new RelayCommand(o =>
         {

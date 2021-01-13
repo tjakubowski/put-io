@@ -69,14 +69,16 @@
 
                                     </ColumnDefinition>
                                     <ColumnDefinition Width="Auto">
-
+                                        
                                     </ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Orientation="Vertical">
                                     <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding Text}" Foreground="White" />
                                 </StackPanel>
-                                <Button Grid.Column="1" HorizontalAlignment="Right">Delete msg</Button>
+                                <StackPanel Visibility="{Binding Path=DataContext.IsAdmin, RelativeSource={RelativeSource AncestorType={x:Type local:ChatPage}}, Converter={StaticResource BoolToVisConverter}}">
+                                    <Button Grid.Column="1" HorizontalAlignment="Right" Command="{Binding Path=DataContext.DeleteMsgCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ChatPage}}}" CommandParameter="{Binding}">Delete</Button>
+                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -106,7 +108,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <StackPanel  Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
                     <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelUserName}"/>
                     <Button Padding="18, 6" Margin="0,8,0,8" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
                 </StackPanel>

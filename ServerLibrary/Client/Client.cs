@@ -74,6 +74,13 @@ namespace ServerLibrary.Client
             var serializedRequest = MessageSerializer.Serialize(request);
             stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
         }
+        
+        public void DeleteMessage(Message message)
+        {
+            var request = new RemoveMessageRequest(message.Id);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+        }
 
         public void AddUser(string username)
         {
