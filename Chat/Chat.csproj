@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\ScrollHelper.cs" />
+    <Compile Include="Helpers\ListBoxAttachedProperties.cs" />
     <Compile Include="Pages\AuthenticationPage.xaml.cs">
       <DependentUpon>AuthenticationPage.xaml</DependentUpon>
     </Compile>

@@ -19,6 +19,11 @@ namespace Chat.ViewModels
             get => User.Admin;
         }
 
+        public bool IsChannelDeletable
+        {
+            get => Channel?.Id != 1;
+        }
+
         public bool IsLogsChangedPropertyInViewModel
         {
             get => Get<bool>();
@@ -70,9 +75,14 @@ namespace Chat.ViewModels
             }
         }
 
-        public RelayCommand DeleteMsgCommand => new RelayCommand(o =>
+        public RelayCommand DeleteChannelCommand => new RelayCommand(o =>
         {
-            var message = (Message) o;
+            App.Client.SendDeleteChannelRequest(Channel);
+        });
+
+        public RelayCommand DeleteMessageCommand => new RelayCommand(o =>
+        {
+            var message = (Message)o;
             App.Client.DeleteMessage(message);
         });
 
@@ -87,7 +97,7 @@ namespace Chat.ViewModels
             App.Client.SendMessage(Message);
             Message = string.Empty;
         });
-        
+
         public RelayCommand AddChannelUserNameCommand => new RelayCommand(o =>
         {
             App.Client.AddUser(NewChannelUserName);
@@ -103,7 +113,7 @@ namespace Chat.ViewModels
         public ChatViewModel()
         {
             var client = App.Client;
-            client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); OnPropertyChanged("ChannelUsers"); };
+            client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); OnPropertyChanged("ChannelUsers"); OnPropertyChanged("IsChannelDeletable"); };
 
             client.SendChannelRequest();
             client.HandleResponses();
