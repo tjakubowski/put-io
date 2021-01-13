@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using Chat.ViewModels.Base;
+using Prism.Commands;
 using ServerLibrary.Models;
 
 namespace Chat.ViewModels
@@ -18,7 +19,12 @@ namespace Chat.ViewModels
             get => User.Admin;
         }
 
-        public bool IsLogsChangedPropertyInViewModel
+        public bool IsChannelDeletable
+        {
+            get => Channel?.Id != 1;
+        }
+
+        public bool AutoScrollEvent
         {
             get => Get<bool>();
             set => Set(value);
@@ -28,10 +34,9 @@ namespace Chat.ViewModels
         {
             get
             {
-                IsLogsChangedPropertyInViewModel = true;
+                AutoScrollEvent = true;
                 return App.Client.Channel;
             }
-
         }
 
         public string NewChannelUserName
@@ -69,7 +74,17 @@ namespace Chat.ViewModels
                 App.Client.ChangeChannel(SelectedChannel.Id);
             }
         }
-        
+
+        public RelayCommand DeleteChannelCommand => new RelayCommand(o =>
+        {
+            App.Client.SendDeleteChannelRequest(Channel);
+        });
+
+        public RelayCommand DeleteMessageCommand => new RelayCommand(o =>
+        {
+            var message = (Message)o;
+            App.Client.DeleteMessage(message);
+        });
 
         public RelayCommand AddChannelCommand => new RelayCommand(o =>
         {
@@ -82,7 +97,7 @@ namespace Chat.ViewModels
             App.Client.SendMessage(Message);
             Message = string.Empty;
         });
-        
+
         public RelayCommand AddChannelUserNameCommand => new RelayCommand(o =>
         {
             App.Client.AddUser(NewChannelUserName);
@@ -98,7 +113,7 @@ namespace Chat.ViewModels
         public ChatViewModel()
         {
             var client = App.Client;
-            client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); OnPropertyChanged("ChannelUsers"); };
+            client.ReceivedDataAction = () => { OnPropertyChanged("Channel"); OnPropertyChanged("Channels"); OnPropertyChanged("ChannelUsers"); OnPropertyChanged("IsChannelDeletable"); };
 
             client.SendChannelRequest();
             client.HandleResponses();
