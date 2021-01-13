@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Chat.Pages"
+      xmlns:helper="clr-namespace:Chat.Helpers"
       xmlns:ff="clr-namespace:FunctionalFun.UI"
       xmlns:viewModels="clr-namespace:Chat.ViewModels"
       mc:Ignorable="d" 
@@ -56,26 +57,40 @@
         </Border>
 
         <!-- Center -->
-        <Border Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
+        <ScrollViewer helper:ScrollHelper.AutoScroll="{Binding IsLogsChangedPropertyInViewModel}" Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding Channel.Name}" Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" />
                 <ItemsControl ItemsSource="{Binding Channel.Messages}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Text}" Foreground="White" />
-                                <Button Content="X" HorizontalAlignment="Right"/>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*">
+
+                                    </ColumnDefinition>
+                                    <ColumnDefinition Width="Auto">
+
+                                    </ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical">
+                                    <TextBlock Text="{Binding User.Username}" Foreground="White" Margin="0,0,8,0" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Text}" Foreground="White" />
+                                </StackPanel>
+                                <Button Grid.Column="1" HorizontalAlignment="Right">Delete msg</Button>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-        </Border>
+        </ScrollViewer>
         <Border Grid.Column="1" Grid.Row="1" Background="#FF36393F" Padding="5">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding SendMessageCommand}">SEND</Button>
-                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message}"/>
+                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SendMessageCommand}" Key="Return" />
+                    </TextBox.InputBindings>
+                </TextBox>
             </DockPanel>
         </Border>
 

@@ -10,12 +10,28 @@ namespace Chat.ViewModels
     {
         public ObservableCollection<Channel> Channels => App.Client.Channels;
         public ObservableCollection<User> ChannelUsers => App.Client.ChannelUsers;
-        public Channel Channel => App.Client.Channel;
+        //public Channel Channel => App.Client.Channel;
         public User User => App.Client.User;
 
         public bool IsAdmin
         {
             get => User.Admin;
+        }
+
+        public bool IsLogsChangedPropertyInViewModel
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        public Channel Channel
+        {
+            get
+            {
+                IsLogsChangedPropertyInViewModel = true;
+                return App.Client.Channel;
+            }
+
         }
 
         public string NewChannelUserName
@@ -53,6 +69,7 @@ namespace Chat.ViewModels
                 App.Client.ChangeChannel(SelectedChannel.Id);
             }
         }
+        
 
         public RelayCommand AddChannelCommand => new RelayCommand(o =>
         {
