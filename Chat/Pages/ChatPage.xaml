@@ -53,14 +53,18 @@
                 </ListBox>
                 <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Visibility="{Binding Path=IsChannelDeletable, Converter={StaticResource BoolToVisConverter}}" Command="{Binding DeleteChannelCommand}" Content="Usuń kanał"/>
                 <StackPanel Margin="0 16" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                    <TextBox MaxLength="10" Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelName}"/>
+                    <TextBox MaxLength="10" Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding AddChannelCommand}" Key="Return"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
                     <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelCommand}" Content="Dodaj kanał"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- Center -->
-        <ScrollViewer helper:ScrollHelper.AutoScroll="{Binding IsLogsChangedPropertyInViewModel}" Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
+        <ScrollViewer helper:ScrollHelper.AutoScroll="{Binding AutoScrollEvent}" Background="#FF36393F" Grid.Column="1" Grid.Row="0" Padding="8">
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding Channel.Name}" Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" />
                 <ItemsControl ItemsSource="{Binding Channel.Messages}">
@@ -91,7 +95,7 @@
         <Border Grid.Column="1" Grid.Row="1" Background="#FF36393F" Padding="5">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Padding="18, 6" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding SendMessageCommand}">SEND</Button>
-                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message}">
+                <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16,8" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding SendMessageCommand}" Key="Return" />
                     </TextBox.InputBindings>
@@ -112,11 +116,19 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <StackPanel Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                    <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelUserName}"/>
-                    <Button Padding="18, 6" Margin="0,8,0,8" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
+                    <TextBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelUserName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding AddChannelUserNameCommand}" Key="Return" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                        <Button Padding="18, 6" Margin="0,8,0,8" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding AddChannelUserNameCommand}" Content="Dodaj użytkownika"/>
                 </StackPanel>
-                <PasswordBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=NewUserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding ChangeUserPasswordCommand}" Content="Zmień hasło" HorizontalAlignment="Right" Width="138"/>
+                <PasswordBox Background="#FF40444B" Foreground="Gainsboro" BorderBrush="{x:Null}" Padding="16 8" Margin="0" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=NewUserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <PasswordBox.InputBindings>
+                        <KeyBinding Command="{Binding ChangeUserPasswordCommand}" Key="Return" />
+                    </PasswordBox.InputBindings>
+                </PasswordBox>
+                    <Button Padding="18, 6" Margin="0,8,0,0" Background="#FF4D5563" BorderBrush="{x:Null}" Foreground="Gainsboro" Command="{Binding ChangeUserPasswordCommand}" Content="Zmień hasło" HorizontalAlignment="Right" Width="138"/>
             </StackPanel>
             
         </Border>

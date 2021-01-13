@@ -12,13 +12,5 @@ namespace Chat.Pages
         {
             InitializeComponent();
         }
-
-        private void Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return)
-            {
-                ((ChatViewModel)this.DataContext).SendMessageCommand.Execute(null);
-            }
-        }
     }
 }

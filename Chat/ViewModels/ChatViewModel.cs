@@ -24,7 +24,7 @@ namespace Chat.ViewModels
             get => Channel?.Id != 1;
         }
 
-        public bool IsLogsChangedPropertyInViewModel
+        public bool AutoScrollEvent
         {
             get => Get<bool>();
             set => Set(value);
@@ -34,7 +34,7 @@ namespace Chat.ViewModels
         {
             get
             {
-                IsLogsChangedPropertyInViewModel = true;
+                AutoScrollEvent = true;
                 return App.Client.Channel;
             }
         }
