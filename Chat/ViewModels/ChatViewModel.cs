@@ -11,18 +11,11 @@ namespace Chat.ViewModels
     {
         public ObservableCollection<Channel> Channels => App.Client.Channels;
         public ObservableCollection<User> ChannelUsers => App.Client.ChannelUsers;
-        //public Channel Channel => App.Client.Channel;
         public User User => App.Client.User;
 
-        public bool IsAdmin
-        {
-            get => User.Admin;
-        }
+        public bool IsAdmin => User.Admin;
 
-        public bool IsChannelDeletable
-        {
-            get => Channel?.Id != 1;
-        }
+        public bool IsChannelDeletable => Channel?.Id != 1;
 
         public bool AutoScrollEvent
         {
