@@ -289,7 +289,7 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .Single();
 
-                    var activeUsers = filteredSessions.Select(s => s.User.Id).ToList();
+                    var activeUsers = sessions.Where(s => s.User != null && s.User.Active).Select(s => s.User.Id).ToList();
                     var users = channel.Users.ToList();
                     users.ForEach(u => u.Active = activeUsers.Contains(u.Id));
                     channel.Users = users;
@@ -377,7 +377,7 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .Single();
 
-                    var activeUsers = sessions.Select(s => s.User.Id).ToList();
+                    var activeUsers = sessions.Where(s=> s.User != null && s.User.Active).Select(s => s.User.Id).ToList();
                     var users = channel.Users.ToList();
                     users.ForEach(u => u.Active = activeUsers.Contains(u.Id));
                     channel.Users = users;
@@ -404,7 +404,14 @@ namespace ServerLibrary.Server
         private void CloseClientSession(TcpServerSession session)
         {
             session.User.Active = false;
-            session.User.Channels.ToList().ForEach(ch => UpdateChannel(ch.Id));
+
+            using (var context = new DatabaseContext())
+            {
+                var channels = context.Channels
+                    .Where(ch => ch.Users.Any(u => u.Id == session.User.Id))
+                    .ToList();
+                channels.ForEach(ch => UpdateChannel(ch.Id));
+            }
 
             sessions.Remove(session);
             session.Client.Close();
@@ -427,7 +434,8 @@ namespace ServerLibrary.Server
                 using (var context = new DatabaseContext())
                 {
                     var hash = User.CreatePassword(request.Password);
-                    session.User = context.Users.Single(u => u.Username == request.Username && u.Password == hash);
+                    session.User = context.Users
+                        .Single(u => u.Username == request.Username && u.Password == hash);
 
                     var channels = context.Channels
                         .Where(ch => ch.Users.Any(u => u.Id == session.User.Id)) // TODO: Exclude User.Password
