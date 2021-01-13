@@ -25,8 +25,12 @@ namespace ServerLibrary.Models
 
         public virtual ICollection<Message> Messages { get; set; }
 
+        [NotMapped]
+        public bool Active { get; set; }
+
         public User()
         {
+            Active = false;
             Channels = new HashSet<Channel>();
             Messages = new HashSet<Message>();
         }

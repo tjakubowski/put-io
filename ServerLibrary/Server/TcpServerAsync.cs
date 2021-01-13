@@ -289,6 +289,11 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .Single();
 
+                    var activeUsers = filteredSessions.Select(s => s.User.Id).ToList();
+                    var users = channel.Users.ToList();
+                    users.ForEach(u => u.Active = activeUsers.Contains(u.Id));
+                    channel.Users = users;
+
                     var channelResponse = new ChannelResponse(channel);
                     var serializedResponse = MessageSerializer.Serialize(channelResponse);
 
@@ -298,7 +303,7 @@ namespace ServerLibrary.Server
                     Logger.Log($"[Channel update] Updated channel '{channel.Name}' for {filteredSessions.Count} users");
                 }
             }
-            catch
+            catch(Exception e)
             {
                 Logger.Log($"[Channel update] Update not sent");
             }
@@ -372,13 +377,18 @@ namespace ServerLibrary.Server
                         .Include(ch => ch.Messages)
                         .Single();
 
+                    var activeUsers = sessions.Select(s => s.User.Id).ToList();
+                    var users = channel.Users.ToList();
+                    users.ForEach(u => u.Active = activeUsers.Contains(u.Id));
+                    channel.Users = users;
+
                     Logger.Log(
                         $"[Channel request] Client {session.User.Username} requested channel {channel.Name}");
 
                     response.Channel = channel;
                 }
             }
-            catch
+            catch(Exception e)
             {
                 response.Result = false;
                 response.Message = "Channel access denied";
@@ -393,6 +403,9 @@ namespace ServerLibrary.Server
 
         private void CloseClientSession(TcpServerSession session)
         {
+            session.User.Active = false;
+            session.User.Channels.ToList().ForEach(ch => UpdateChannel(ch.Id));
+
             sessions.Remove(session);
             session.Client.Close();
 
@@ -421,6 +434,9 @@ namespace ServerLibrary.Server
                         .ToList();
                     response.Channels = channels;
                     response.User = session.User;
+
+                    session.User.Active = true;
+                    channels.ForEach(ch => UpdateChannel(ch.Id));
 
                     Logger.Log($"[Login] User {session.User.Username} logged in");
                 }
