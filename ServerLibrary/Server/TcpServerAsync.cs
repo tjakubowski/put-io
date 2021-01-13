@@ -84,6 +84,9 @@ namespace ServerLibrary.Server
 
                     else if (request is RemoveChannelUserRequest removeChannelUserRequest)
                         RemoveChannelUser(session, removeChannelUserRequest);
+
+                    else if (request is RemoveMessageRequest removeMessageRequest)
+                        RemoveMessage(session, removeMessageRequest);
                 }
                 catch (Exception e)
                 {
@@ -152,6 +155,33 @@ namespace ServerLibrary.Server
             catch
             {
                 var response = new AddChannelResponse(false, "Channel not deleted");
+                var serializedResponse = MessageSerializer.Serialize(response);
+                session.SendBytes(serializedResponse.Data);
+            }
+        }
+
+        private void RemoveMessage(TcpServerSession session, RemoveMessageRequest removeMessageRequest)
+        {
+            try
+            {
+                if (!session.User.Admin)
+                    throw new Exception();
+
+                using (var context = new DatabaseContext())
+                {
+                    var message = context.Messages.Single(m => m.Id == removeMessageRequest.MessageId);
+                    context.Messages.Remove(message);
+                    context.SaveChanges();
+
+                    Logger.Log(
+                        $"[Remove message] Admin {session.User.Username} deleted {message.Id} message");
+
+                    UpdateChannel(message.ChannelId);
+                }
+            }
+            catch
+            {
+                var response = new AddChannelResponse(false, "Message not deleted");
                 var serializedResponse = MessageSerializer.Serialize(response);
                 session.SendBytes(serializedResponse.Data);
             }
