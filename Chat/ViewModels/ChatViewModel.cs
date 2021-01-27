@@ -73,6 +73,12 @@ namespace Chat.ViewModels
             App.Client.SendDeleteChannelRequest(Channel);
         });
 
+        public RelayCommand RemoveChannelUserCommand => new RelayCommand(o =>
+        {
+            var username = (string)o;
+            App.Client.SendRemoveChannelUserRequest(username, Channel);
+        });
+
         public RelayCommand DeleteMessageCommand => new RelayCommand(o =>
         {
             var message = (Message)o;

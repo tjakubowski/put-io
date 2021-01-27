@@ -191,13 +191,14 @@ namespace ServerLibrary.Server
         {
             try
             {
-                if (!session.User.Admin || removeChannelUserRequest.ChannelId == 1)
+                if (removeChannelUserRequest.ChannelId == 1 || !session.User.Admin)
                     throw new Exception();
 
                 using (var context = new DatabaseContext())
                 {
                     var user = context.Users.Single(u => u.Username == removeChannelUserRequest.Username);
-                    var channel = context.Channels.Single(ch => ch.Id == removeChannelUserRequest.ChannelId);
+                    var channel = context.Channels.Include(ch => ch.Users).Single(ch => ch.Id == removeChannelUserRequest.ChannelId);
+
 
                     channel.Users.Remove(user);
                     context.SaveChanges();
@@ -205,8 +206,13 @@ namespace ServerLibrary.Server
                     Logger.Log(
                         $"[Remove channel user] User {user.Username} has been removed from the channel {channel.Name}");
 
-                    var sessionToMove = sessions.Single(s => s.User.Id == user.Id );
-                    MoveToChannel(sessionToMove, new ChannelRequest(1));
+                    var sessionToMove = sessions.SingleOrDefault(s => s.User.Id == user.Id );
+                    if(sessionToMove != null)
+                    {
+                        MoveToChannel(sessionToMove, new ChannelRequest(1));
+                    }
+                    
+                    UpdateChannel(channel.Id);
                 }
             }
             catch
@@ -235,6 +241,7 @@ namespace ServerLibrary.Server
                     Logger.Log($"[Add channel user] User {user.Username} has been added to the channel {channel.Name}");
 
                     UpdateChannels(user.Id);
+                    UpdateChannel(channel.Id);
                 }
             }
             catch
