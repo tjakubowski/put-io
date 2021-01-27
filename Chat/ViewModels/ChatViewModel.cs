@@ -14,7 +14,7 @@ namespace Chat.ViewModels
         public User User => App.Client.User;
 
         public bool IsAdmin => User.Admin;
-
+        public bool IsAdminAndDeletable => (User.Admin && Channel?.Id != 1);
         public bool IsChannelDeletable => Channel?.Id != 1;
 
         public bool AutoScrollEvent
