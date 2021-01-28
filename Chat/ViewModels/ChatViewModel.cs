@@ -14,7 +14,7 @@ namespace Chat.ViewModels
         public User User => App.Client.User;
 
         public bool IsAdmin => User.Admin;
-
+        public bool IsAdminAndDeletable => (User.Admin && Channel?.Id != 1);
         public bool IsChannelDeletable => Channel?.Id != 1;
 
         public bool AutoScrollEvent
@@ -71,6 +71,12 @@ namespace Chat.ViewModels
         public RelayCommand DeleteChannelCommand => new RelayCommand(o =>
         {
             App.Client.SendDeleteChannelRequest(Channel);
+        });
+
+        public RelayCommand RemoveChannelUserCommand => new RelayCommand(o =>
+        {
+            var username = (string)o;
+            App.Client.SendRemoveChannelUserRequest(username, Channel);
         });
 
         public RelayCommand DeleteMessageCommand => new RelayCommand(o =>

@@ -103,6 +103,13 @@ namespace ServerLibrary.Client
             stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
         }
 
+        public void SendRemoveChannelUserRequest(string username, Channel channel)
+        {
+            var request = new RemoveChannelUserRequest(username, channel.Id);
+            var serializedRequest = MessageSerializer.Serialize(request);
+            stream.Write(serializedRequest.Data, 0, serializedRequest.Data.Length);
+        }
+
         public Client(string hostname, int port)
         {
             if(!IsPortValid(port))

@@ -59,7 +59,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Padding="18, 6" Margin="0,8,0,0" Visibility="{Binding Path=IsChannelDeletable, Converter={StaticResource BoolToVisConverter}}" Command="{Binding DeleteChannelCommand}" Content="Usuń kanał"/>
+                <Button Padding="18, 6" Margin="0,8,0,0" Visibility="{Binding Path=IsAdminAndDeletable, Converter={StaticResource BoolToVisConverter}}" Command="{Binding DeleteChannelCommand}" Content="Usuń kanał"/>
                 <StackPanel Margin="0 16" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
                     <TextBox MaxLength="10" BorderBrush="{x:Null}" Padding="16 8" Margin="0" Text="{Binding NewChannelName, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.InputBindings>
@@ -131,6 +131,9 @@
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
+                                    <StackPanel Visibility="{Binding Path=DataContext.IsAdmin, RelativeSource={RelativeSource AncestorType={x:Type local:ChatPage}}, Converter={StaticResource BoolToVisConverter}}">
+                                        <Button Padding="18, 6" HorizontalAlignment="Right" Command="{Binding Path=DataContext.RemoveChannelUserCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ChatPage}}}" CommandParameter="{Binding Username}">Usuń</Button>
+                                    </StackPanel> <!-- DELETE BUTTON -->
                                 </TextBlock>
                             </StackPanel>
                         </DataTemplate>
